@@ -95,7 +95,7 @@ date = time.strftime("%Y-%m-%d", time.localtime(time.time()))
 
 def kmeans_inertia(center,ProvinceName):
     global date
-    filename = "./sentences/" + date +  '_' + ProvinceName + ".txt"
+    filename = "./sentences/" + '2024-05-04' +  '_' + 'sichuan' + ".txt"
     # filename = "./sentences/2021-04-02.txt"
 
     if os.path.exists(filename):
@@ -169,7 +169,7 @@ def kmeans_inertia(center,ProvinceName):
 
 def kmeans_DBI(center,ProvinceName):
     global date
-    filename = "./sentences/" + date +  '_' + ProvinceName + ".txt"
+    filename = "./sentences/" + '2024-05-04' +  '_' + 'sichuan' + ".txt"
 
     # filename = "./sentences/2021-04-02.txt"
 
@@ -251,7 +251,7 @@ def kmeans_DBI(center,ProvinceName):
 
 def kmeans_last(center, ProvinceName):
     global date,text,category,corpus,points
-    filename = "./sentences/" + date +  '_' + ProvinceName + ".txt"
+    filename = "./sentences/" + '2024-05-04' +  '_' + 'sichuan' + ".txt"
 
     # filename = "./sentences/2021-04-02.txt"
     points = []

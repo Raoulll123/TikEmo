@@ -40,7 +40,7 @@ def LDA(ProvinceName):
     print(stopwords.head())
     stopwords = stopwords['stopword'].values
 
-    filename = "./sentences/" + date + '_' + ProvinceName +  ".txt"
+    filename = "./sentences/" + '2024-05-04' + '_' + 'sichuan' +  ".txt"
 
     if os.path.exists(filename):
         # 加载语料

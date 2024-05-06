@@ -8,7 +8,7 @@ import numpy as np
 import joblib
 from sklearn.feature_extraction.text import TfidfVectorizer, TfidfTransformer, CountVectorizer
 
-filename = "./sentences/2021-04-02.txt"
+filename = "./sentences/2024-05-04.txt"
 
 corpus = []
 with open(filename, "r", encoding='utf-8') as f:
