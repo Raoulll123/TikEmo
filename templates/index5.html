@@ -1,0 +1,405 @@
+﻿<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>情感分析总结果展示</title>
+    <script type="text/javascript" src="{{ url_for('static', filename='js/jquery.js')}}"></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/comon0.css')}}">
+</head>
+<body>
+    <div class="loading">
+        <div class="loadbox"> <img src="{{ url_for('static', filename='imgs/loading.gif')}}"> 页面加载中... </div>
+    </div>
+    <div class="head">
+        <h1>情感分析总结果展示</h1>
+                    <span style=" color: #00e4ff;font-size:24px; position: absolute; right: 40px;margin-top: 1.5%"><a href="index0">exit</a></span>
+{#        <div class="weather"><img src="{{ url_for('static', filename='imgs/weather.png')}}"><span>多云转小雨</span><span>2017-12-30</span></div>#}
+    </div>
+    <div class="mainbox">
+        <ul class="clearfix">
+            <li>
+                <div class="boxall" style="height: 2.7rem;margin-top: 10vh">
+                    <div class="alltitle">情感倾向数据</div>
+
+                    <div class="sycm">
+                        <ul class="clearfix">
+                            <li><h2>{{ emotion[2]|safe }}</h2><span>今日总数据</span></li>
+                            <li><h2>{{ emotion[1]|safe }}</h2><span>积极情感数</span></li>
+                            <li><h2>{{ emotion[3]|safe }}</h2><span>比例(小数)</span></li>
+                        </ul>
+                        <div style="border-bottom: 1px solid rgba(255,255,255,.1)"></div>
+                        <ul class="clearfix">
+                            <li><h2>{{ emotion[2]|safe }}</h2><span>今日总数据</span></li>
+                            <li><h2>{{ emotion[0]|safe }}</h2><span>消极情感数</span></li>
+                            <li><h2>{{ emotion[4]|safe }}</h2><span>比例(小数)</span></li>
+                        </ul>
+
+
+                    </div>
+                    <div class="boxfoot"></div>
+                </div>
+                <div class="boxall" style="height: 2.65rem;margin-top: 10vh">
+                    <div class="alltitle">情感倾向占比</div>
+                    <div class="sy" id="echarts1"></div>
+                    <div class="sy" id="echarts2"></div>
+                    <div class="sy" id="echarts3"></div>
+                    <div class="boxfoot"></div>
+                </div>
+{#                <div class="boxall" style="height: 2.95rem">#}
+{#                    <div class="alltitle">情感倾向数量</div>#}
+{#                    <div style="height: 52%; width: 82%;margin-left: 9%;opacity: 0.69"><img src="{{ url_for('static', filename='emo.png')}}" /></div>#}
+{#                    <div class="boxfoot"></div>#}
+{#                </div>#}
+            </li>
+            <li>
+                <div class="bar">
+                    <div class="barbox">
+                        <ul class="clearfix">
+                            <li class="pulll_left counter">{{ emotion[1]|safe }}</li>
+                            <li class="pulll_left counter">{{ emotion[0]|safe }}</li>
+                        </ul>
+                    </div>
+                    <div class="barbox2">
+                        <ul class="clearfix">
+                            <li class="pulll_left">总积极情感</li>
+                            <li class="pulll_left">总消极情感</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="map">
+                    <div class="map1"><img src="{{ url_for('static', filename='imgs/lbx.png')}}"></div>
+                    <div class="map2"><img src="{{ url_for('static', filename='imgs/jt.png')}}"></div>
+                    <div class="map3"><img src="{{ url_for('static', filename='imgs/map.png')}}"></div>
+                    <div class="map4" id="map_1"></div>
+                </div>
+            </li>
+            <li>
+                <div class="boxall" style="height:5.2rem;margin-top: 13vh">
+                    <div class="alltitle">情感倾向</div>
+                    <div id="ec" style="width: 23vw;height: 23vw;margin-top: 1%"></div>
+                    <div class="clearfix">
+
+                    </div>
+{#                        <div>#}
+{#                            <img src="{{ url_for('static', filename='g1.gif')}}"/>#}
+{#                        </div>#}
+{#                    <div class="boxfoot"></div>#}
+                </div>
+{#                <div class="boxall" style="height: 3.3rem">#}
+{#                    <div class="alltitle">22娘和33娘</div>#}
+{#                    <div class="wrap">#}
+{#                        <ul>#}
+{#                            <li style="width: 165%;height: 165%;margin-left: -10%">#}
+{#                                <p><img src="{{ url_for('static', filename='g5.gif')}}"/></p>#}
+{#                            </li>#}
+{#                        </ul>#}
+{#                    </div>#}
+{#                    <div class="boxfoot"></div>#}
+{#                </div>#}
+            </li>
+        </ul>
+ 
+    </div>
+    <div class="back"></div>
+    <script language="JavaScript" src="{{ url_for('static', filename='js/js.js')}}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='js/echarts.min.js')}}"></script>
+{#    <script type="text/javascript" src="{{ url_for('static', filename='js/china.js')}}"></script>#}
+{#    <script type="text/javascript" src="{{ url_for('static', filename='js/area_echarts.js')}}"></script>#}
+    <script type="text/javascript">
+        $(document).ready(function () {
+            myChart1.resize();
+            myChart2.resize();
+            myChart3.resize();
+            myChart6.resize();
+        })
+        window.addEventListener("resize", function () {
+            myChart1.resize();
+            myChart2.resize();
+            myChart3.resize();
+            myChart6.resize();
+        });
+    </script>
+    <script type="text/javascript">
+    	    var server = {
+      	           content1:{{ emotion[1]|safe }},
+                   content2:{{ emotion[0]|safe }}
+  	    };
+	   </script>
+        <script type="text/javascript">
+        var myChart1 = echarts.init(document.getElementById('echarts1'));
+        var positive = {{ emotion[1]|safe }};
+        var negative ={{ emotion[0]|safe }};
+        var v1 = positive
+        var v2 = negative
+        var v3 = v1 + v2;
+        option1 = {
+
+        toolbox: {
+            show: true,
+            feature: {
+                dataView: {show: true, readOnly: false},
+                // magicType: {show: true, type: ['line', 'bar']},
+                restore: {show: true},
+                saveAsImage: {show: true}
+            }
+          },
+            series: [{
+                type: 'pie',
+                radius: ['70%', '80%'],
+                color: '#0088cc',
+                label: {
+                    normal: {
+                        position: 'center'
+                    }
+                },
+                data: [{
+                    value: v1,
+                    name: 'emotion',
+                    label: {
+                        normal: {
+                            formatter: v3 + '',
+                            textStyle: {
+                                fontSize: 20,
+                                color: '#fff',
+                            }
+                        }
+                    }
+                },
+                ]
+            }]
+        };
+
+
+        var myChart3 = echarts.init(document.getElementById('echarts3'));
+
+        var v1 = positive
+        var v2 = negative
+        var v3 = v1 + v2
+        option2 = {
+
+
+            series: [{
+                type: 'pie',
+                radius: ['70%', '80%'],
+                color: '#fccb00',
+                label: {
+                    normal: {
+                        position: 'center'
+                    }
+                },
+                data: [{
+                    value: v1,
+                    name: 'positive',
+                    label: {
+                        normal: {
+                            formatter: v1 + '',
+                            textStyle: {
+                                fontSize: 20,
+                                color: '#fff',
+                            }
+                        }
+                    }
+                }, {
+                    value: v2,
+                    name: 'negative',
+                    label: {
+                        normal: {
+                            formatter: function (params) {
+                                return '占比' + Math.round(v1 / v3 * 100) + '%'
+                            },
+                            textStyle: {
+                                color: '#aaa',
+                                fontSize: 12
+                            }
+                        }
+                    },
+                    itemStyle: {
+                        normal: {
+                            color: 'rgba(255,255,255,.2)'
+                        },
+                        emphasis: {
+                            color: '#fff'
+                        }
+                    },
+                }]
+            }]
+        };
+
+
+        var myChart2 = echarts.init(document.getElementById('echarts2'));
+        option3 = {
+
+
+            series: [{
+
+                type: 'pie',
+                radius: ['70%', '80%'],
+                color: '#62b62f',
+                label: {
+                    normal: {
+                        position: 'center'
+                    }
+                },
+                data: [{
+                    value: v2,
+                    name: 'negative',
+                    label: {
+                        normal: {
+                            formatter: v2 + '',
+                            textStyle: {
+                                fontSize: 20,
+                                color: '#fff',
+                            }
+                        }
+                    }
+                }, {
+                    value: v1,
+                    name: 'positive',
+                    label: {
+                        normal: {
+                            formatter: function (params) {
+                                return '占比' + Math.round(v2 / v3 * 100) + '%'
+                            },
+                            textStyle: {
+                                color: '#aaa',
+                                fontSize: 12
+                            }
+                        }
+                    },
+                    itemStyle: {
+                        normal: {
+                            color: 'rgba(255,255,255,.2)'
+                        },
+                        emphasis: {
+                            color: '#fff'
+                        }
+                    },
+                }]
+            }]
+        };
+        setTimeout(function () {
+            myChart1.setOption(option1);
+            myChart2.setOption(option2);
+            myChart3.setOption(option3);
+        }, 500);
+
+    </script>
+
+    <script type="text/javascript">
+        var positive = server.content1;
+        var negative = server.content2;
+        var sums =  negative + positive;
+        var myChart6 = echarts.init(document.getElementById('ec'));
+        option6  = {
+                toolbox: {
+        show: true,
+        feature: {
+            dataView: {show: true, readOnly: false},
+            // magicType: {show: true, type: ['line', 'bar']},
+            restore: {show: true},
+            saveAsImage: {show: true}
+        }
+    },
+        title: {
+        {#text: '漏斗图',#}
+        {#subtext: '纯属虚构',#}
+        left: 'left',
+        top: 'bottom'
+    },
+    tooltip: {
+        trigger: 'item',
+        formatter: '{a} <br/>{b} : {c}%'
+    },
+    toolbox: {
+        orient: 'vertical',
+        top: 'center',
+        feature: {
+            dataView: {readOnly: false},
+            restore: {},
+            saveAsImage: {}
+        }
+    },
+    legend: {
+        orient: 'vertical',
+        top: 'bottom',
+        left: 'left',
+        data: ['num', 'positive', 'negative']
+    },
+    series: [
+        {#{#}
+        {#    name: '漏斗图',#}
+        {#    type: 'funnel',#}
+        {#    width: '38%',#}
+        {#    height: '43%',#}
+        {#    left: '5%',#}
+        {#    top: '48%',#}
+        {#    data: [#}
+        {#        {value: sums, name: 'num'},#}
+        {#        {value: positive, name: 'positive'},#}
+        {#        {value: negative, name: 'negative'},#}
+        {#    ]#}
+        {#},#}
+        {#{#}
+        {#    name: '金字塔',#}
+        {#    type: 'funnel',#}
+        {#    width: '38%',#}
+        {#    height: '43%',#}
+        {#    left: '5%',#}
+        {#    top: '3%',#}
+        {#    sort: 'ascending',#}
+        {#    data: [#}
+        {#       {value: sums, name: 'num'},#}
+        {#        {value: positive, name: 'positive'},#}
+        {#        {value: negative, name: 'negative'},#}
+        {#    ]#}
+        {#},#}
+        {
+            name: '漏斗图',
+            type: 'funnel',
+            width: '38%',
+            height: '43%',
+            left: '25%',
+            top: '3%',
+            label: {
+                position: 'left'
+            },
+            data: [
+                {value: sums, name: 'num'},
+                {value: positive, name: 'positive'},
+                {value: negative, name: 'negative'},
+            ]
+        },
+        {
+            name: '金字塔',
+            type: 'funnel',
+            width: '38%',
+            height: '43%',
+            left: '56%',
+            top: '48%',
+            sort: 'ascending',
+            label: {
+                position: 'left'
+            },
+            data: [
+              {value: sums, name: 'num'},
+                {value: positive, name: 'positive'},
+                {value: negative, name: 'negative'},
+            ]
+        }
+    ]
+};
+
+
+        setTimeout(function () {
+            myChart6.setOption(option6);
+        }, 500);
+
+    </script>
+    <script type="text/javascript" src="{{ url_for('static', filename='js/jquery.waypoints.min.js')}}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='js/jquery.countup.min.js')}}"></script>
+    <script type="text/javascript">
+        $('.counter').countUp();
+    </script>
+
+</body>
+</html>

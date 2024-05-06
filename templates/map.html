@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>ECharts 中国地图</title>
+    <!-- 引入 echarts.js -->
+    <script src="https://cdn.bootcdn.net/ajax/libs/echarts/5.2.2/echarts.min.js"></script>
+    <!-- 引入 china.js -->
+    <script src="https://cdn.bootcdn.net/ajax/libs/echarts/5.2.2/extension/dataTool.min.js"></script>
+    <script src="../static/js/china.js"></script>
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+        }
+        @keyframes slide {
+            0% {left: 100%;}
+            100% {left: 16.5%;}
+        }
+
+        @keyframes move {
+            0% {left: 0;}
+            100% {left: 45%;}
+        }
+
+        @keyframes flip {
+            0% {transform: rotateY(0deg);}
+            100% {transform: rotateY(180deg);}
+        }
+
+        @keyframes flipImage {
+            0% {left: 100%; transform: rotateY(180deg);}
+            100% {left: 40%; transform: rotateY(0deg);}
+        }
+
+        @keyframes zTranslate {
+            0% {transform: translateZ(-500px);}
+            100% {transform: translateZ(0px);}
+        }
+
+        @keyframes slideUp {
+            0% {transform: translateY(0);}
+            100% {transform: translateY(-100vh);}
+        }
+
+        @keyframes moveToLeft {
+        0% {left: 40%; transform: scale(1) translateY(0)}
+        100% {left: 0%; transform: scale(0.3) translateY(-20vh)}
+    }
+
+        @keyframes fadeIn {
+            0% {opacity: 0;}
+            100% {opacity: 1;}
+        }
+
+        body {
+            background-color: black;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            overflow: hidden;
+            perspective: 1000px; /* 添加透视效果 */
+        }
+        h1 {
+            color: white;
+            font-family: 'Arial', sans-serif;
+            font-size: 50vh;
+            position: relative;
+            transform: translateZ(-500px); /* 设置初始位置 */
+        }
+        .overlay {
+            position: absolute;
+            right: 0;
+            top: 0;
+            height: 100%;
+            background-color: black;
+        }
+        img {
+            display: none;
+            position: absolute;
+            width: 50vh;
+            height: 50vh;
+        }
+        #newDiv {
+            display: block;
+            opacity: 0;
+            position: absolute;
+            top: -2vh;
+            width: 100vh;
+            height: 100vh;
+            left: 47vw;
+            background-color: transparent;
+        }
+        #newText {
+            display: block;
+            opacity: 0;
+            position: absolute;
+            left: 11%;
+            top: 55vh;
+            transform: translateZ(-500px);
+            color: white;
+            font-family: 'Arial', sans-serif;
+            font-size: 2.5vh;
+        }
+
+        #divider {
+            display: block;
+            position: absolute;
+            opacity: 0;
+            left: 50%;
+            top: 30vh;
+            width: 1px;
+            height: 40vh;
+            background-color: white;
+        }
+    </style>
+</head>
+<body>
+    <h1 id="text">
+        TIKEMO
+        <div class="overlay" id="overlay"></div>
+    </h1>
+    <img id="image" src="../static/imgs/T.png" alt="T image">
+    <p id="newText">基于ERNIE-UIE&CRNN的抖音同城热榜视频分析平台</p>
+    <div id="divider"></div>
+    <div id="newDiv"></div>
+    <script>
+        document.body.addEventListener('click', () => {
+            var text = document.getElementById('text');
+            text.style.animation = 'zTranslate 2s forwards, move 1.5s 2s forwards, flip 2s 4s forwards';
+            document.getElementById('overlay').style.animation = 'slide 1.5s 2s forwards';
+            setTimeout(() => {
+                document.body.style.perspective = 'none';
+            }, 4000);
+            text.addEventListener('animationend', (event) => {
+                if (event.animationName === 'flip') {
+                    text.style.display = 'none';
+                    var img = document.getElementById('image');
+                    img.style.display = 'block';
+                    img.style.animation = 'flipImage 1.5s -0.4s forwards';
+
+                    img.addEventListener('animationend', (event) => {
+                        if (event.animationName === 'flipImage') {
+                            img.style.animation = 'moveToLeft 2s forwards';
+
+                            var newText = document.createElement('h1');
+                            newText.textContent = 'IKEMO';
+                            newText.style.opacity = '0';
+                            newText.style.position = 'absolute';
+                            newText.style.fontSize = '140px';
+                            newText.style.left = '18%';
+                            newText.style.top = '36%';
+                            newText.style.transform = 'translateZ(-500px)';
+                            newText.style.animation = 'fadeIn 2s 3s forwards';
+                            document.body.appendChild(newText);
+
+                            var newText1 = document.getElementById('newText');
+                            newText1.style.animation = 'fadeIn 2s 5s forwards';
+
+                            var divider = document.getElementById('divider');
+                            divider.style.animation = 'fadeIn 2s 5s forwards';
+
+                            var mapdiv = document.getElementById('newDiv');
+                            mapdiv.style.animation = 'fadeIn 2s 5s forwards';
+                            }
+                    });
+                }
+            });
+
+        });
+    </script>
+        <script type="text/javascript">
+            // 基于准备好的dom，初始化echarts实例
+            var myChart = echarts.init(document.getElementById('newDiv'));
+
+            // 指定图表的配置项和数据
+            var option = {
+            //     title: {
+            //     text: '各省份抖音视频热度',
+            //     subtext: '选择对应省份查看详细信息',
+            //     left: 'center',
+            //     textStyle: {
+            //         color: '#ffffff',  // 标题颜色
+            //         fontSize: 24  // 标题字体大小
+            //     }
+            // },
+            tooltip: {
+                trigger: 'item',
+                formatter: function(params) {
+                return '省份：' + params.name + '<br>热度值：' + params.value;
+            }
+            },
+            visualMap: {
+                min: 100000,
+                max: 1000000,
+                left: 'left',
+                top: 'bottom',
+                text: ['高','低'],
+                calculable: true,
+                show: false,
+                inRange: {
+                    color: [ '#f3e6f8', '#8d7bd4']
+                }
+            },
+            series: [
+                {
+                    name: '省份',
+                    type: 'map',
+                    mapType: 'china',
+                    roam: false,
+                    label: {
+                        normal: {
+                            show: true
+                        },
+                        emphasis: {
+                            show: true
+                        }
+                    },
+                    itemStyle: {
+                        emphasis: {
+                            areaColor: '#003cff'  // 鼠标悬浮时的颜色，这里设置为红色
+                        }
+                    },
+                        data:[
+                            {name: '北京', value: 934726 },
+                            {name: '天津', value: 678499 },
+                            {name: '上海', value: 978439 },
+                            {name: '重庆', value: randomData() },
+                            {name: '河北', value: randomData() },
+                            {name: '河南', value: randomData() },
+                            {name: '云南', value: randomData() },
+                            {name: '辽宁', value: randomData() },
+                            {name: '黑龙江', value: randomData() },
+                            {name: '湖南', value: randomData() },
+                            {name: '安徽', value: randomData() },
+                            {name: '山东', value: randomData() },
+                            {name: '新疆', value: randomData() },
+                            {name: '江苏', value: randomData() },
+                            {name: '浙江', value: randomData() },
+                            {name: '江西', value: randomData() },
+                            {name: '湖北', value: randomData() },
+                            {name: '广西', value: randomData() },
+                            {name: '甘肃', value: randomData() },
+                            {name: '山西', value: randomData() },
+                            {name: '内蒙古', value: randomData() },
+                            {name: '陕西', value: randomData() },
+                            {name: '吉林', value: randomData() },
+                            {name: '福建', value: randomData() },
+                            {name: '贵州', value: randomData() },
+                            {name: '广东', value: randomData() },
+                            {name: '青海', value: randomData() },
+                            {name: '西藏', value: randomData() },
+                            {name: '四川', value: randomData() },
+                            {name: '宁夏', value: randomData() },
+                            {name: '海南', value: randomData() },
+                            {name: '台湾', value: randomData() },
+                            {name: '香港', value: randomData() },
+                            {name: '澳门', value: randomData() }
+                        ]
+                    }
+                ]
+            };
+
+
+            function randomData() {
+                return Math.round(Math.random()*1000000 + Math.random()*1000);
+            }
+
+            myChart.setOption(option);
+
+            myChart.on('click', function (params) {
+            var provinceName = params.name; // 获取省份的名称
+            console.log(provinceName)
+            fetch('/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ province: provinceName }),
+            })
+            .then(response => response.json())
+            .then(data => console.log(data))
+            .catch((error) => console.error('Error:', error));
+            setTimeout(function() {
+                window.location.href = 'http://127.0.0.1:5000/index';
+            }, 2000);
+        });
+        </script>
+</body>
+</html>

@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>TikTok_lda</title>
+    <script src="https://cdn.bootcss.com/jquery/3.0.0/jquery.min.js"></script>
+    <script type="text/javascript" src="https://assets.pyecharts.org/assets/echarts.min.js"></script>
+</head>
+<style>
+    .ldaimg{
+        left: 10vw;
+        margin-left: 12vw;
+        top: 1vw;
+        margin-top: 2vw;
+    }
+    #img1,#img2,#img3,#img4,#img5
+    {
+        width: 20%;
+        height: 30%;
+    }
+    #img,#img0
+    {
+        width: 30%;
+        height: 40%;
+    }
+</style>
+<body>
+<div class="ldaimg">
+    <img src="{{ url_for('static', filename='imgs/图片5.png')}}" alt="124" id="img0" >
+    <img src="{{ url_for('static', filename='imgs/图片10.png')}}" alt="124" id="img" >
+    <div>
+        <img src="{{ url_for('static', filename='LDA/TikTok_theme.png')}}" alt="124" id="img2" >
+        <img src="{{ url_for('static', filename='LDA/TikTok_theme_category1.png')}}" alt="124" id="img3" >
+        <img src="{{ url_for('static', filename='LDA/TikTok_theme_category2.png')}}" alt="124" id="img4" >
+        <img src="{{ url_for('static', filename='LDA/TikTok_theme_category3.png')}}" alt="124" id="img5" >
+    </div>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>热榜视频综合基本信息展示</title>
+		<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css')}}" />
+		<script type="text/javascript" src="{{ url_for('static', filename='js/jquery-1.8.0.min.js')}}"></script>
+	</head>
+	<body>
+		<div id="content">
+            <header style="width: 100%;opacity: 0.9;margin:0px auto;display:inline-block;text-align:center;padding-bottom: 2%;margin-top: -1.6%">
+			热榜视频综合基本信息展示
+			<span id=localtime style=" font-size:14px; position: absolute; right: 85px; top:-20px; "></span>
+            <span style=" font-size:14px; position: absolute; right: 20px; top:-20px; "><a href="index0">return</a></span>
+		</header>
+			<div class="content_left">
+				<div class="dtuplc">
+                    <div class="title">TikTok 用户使用情况</div>
+					<div class="dtu">
+						<div id="container" style="height: 100%;"></div>						
+					</div>
+{#					<div class="plc">#}
+{#						<div id="container1" style="height: 100%"></div>#}
+{#					</div>#}
+                    <div class="online" >
+{#                	<div class="title"><img src="{{ url_for('static', filename='imgs/icon01.png')}}" /> 使用人群年龄占比</div>#}
+                	    <div class="online_con" id="container2"></div>
+                    </div>
+			    </div>
+
+                <div class="data_box" style="height: 180px;width: 500px">
+                    <div class="title"><img src="{{ url_for('static', filename='imgs/icon06.png')}}" />Top100视频及其评分</div>
+                    <div class="data_con" id="container4"></div>
+                </div>
+
+                <div class="industry" style="height: 180px;width: 500px">
+                	<div class="title"><img src="{{ url_for('static', filename='imgs/icon02.png')}}" /> 博主 弹幕量</div>
+                	<div class="industry_con" id="container3"></div>
+                </div>
+            </div>
+				<!--
+                	DTU和PLC完
+                -->
+{#                <div class="online" >#}
+{#                	<div class="title"><img src="{{ url_for('static', filename='imgs/icon01.png')}}" /> 使用人群年龄占比</div>#}
+{#                	<div class="online_con" id="container2"></div>#}
+{#                </div>#}
+			</div>
+			<div class="content_center">
+				<div class="center_top">
+					<div class="title"><img src="{{ url_for('static', filename='imgs/icon03.png')}}" /> 平台数据分布</div>
+					<div class="center_top_con" id="main" style="margin-left: 2%">
+					</div>
+				</div>
+				<div class="center_bot" style="height: 200%">
+					<table class="panel-table"bordercolor="#0d48e0" border="1" style="width: 99.6%">
+                        <thead bgcolor="#0e4ae0" align="center" >
+                        <tr height="40">
+                            <th colspan="6"><img src="{{ url_for('static', filename='imgs/icon04.png')}}" /> Top 视频相关信息
+                            <span id="inputs" class="t_table" style="margin-left: 5%">&emsp;</span>
+                            </th>
+                        </tr>
+                        </thead>
+                        <tbody id="table">
+                        <script>
+                var server = {
+                            info:{{ info|safe }}
+                             }
+                        </script>
+                        <script>
+       var strs = server.info;
+        var len = 5;
+        //确认该集合会被分成几页，分成几页就代表需要几个页面按钮,封装封装方便多次运用
+        function limits(){
+	        var countLim = Math.ceil(strs.length/len);//余数也算是一页，这里用向上取整
+	        //确认页面按钮个数，进行循环显示到页面上
+	        document.getElementById("inputs").innerHTML='';//清空一下
+	        for(var i=1;i<=countLim;i++){
+		        document.getElementById("inputs").innerHTML+='<input type="button" value="'+i+'" onclick="limitinput(this)"/>';//每个页面按钮都绑定上一个点击事件
+	        }
+        }
+        var choose = 0;//创建一个全局变量用来保存当前处于第几个页面
+        //点击按钮获取当前按钮的值进行选择当前table是第几页数据
+        function limitinput(ids){
+	        choose = ids.value;
+	        tablestr(choose);//刷新table数据
+	        limits();//刷新页面按钮
+            ids.style.backgroundColor='pink';//当前点击的页面按钮背景颜色改变为红色
+	        liminputcolor(choose);//页面按钮变色
+        }
+        //通过当前页面按钮和页面数据长度将数据放进table内，封装封装！！！必须封装
+        function tablestr(num){//num是指当前哪个页面
+	        var num1 = (num-1)*len;//确定循环开始的集合下标
+	        var num2 = num*len;//确定循环结束的结束下标
+	        document.getElementById("table").innerHTML='';//清空一下
+            document.getElementById("table").innerHTML+='<tr class="aaa" align="center">\n' +
+                '                        \t<td style="color: #00fcff; font-size: 14px; padding: 1px 0;">标题</td>\n' +
+                '                            <td style="color: #00fcff; font-size: 14px; padding: 1px 0;">作者</td>\n' +
+                '                            <td style="color: #00fcff; font-size: 14px; padding: 1px 0;">播放量</td>\n' +
+                '                            <td style="color: #00fcff; font-size: 14px; padding: 1px 0;">弹幕量</td>\n' +
+                '                            <td style="color: #00fcff; font-size: 14px; padding: 1px 0;">点赞量</td>\n' +
+                '                            <td style="color: #00fcff; font-size: 14px; padding: 1px 0;">视频地址</td>\n' +
+                '                        </tr>' ;//每循环一次添加一条数据
+	        for(var i=num1;i<num2;i++){//遍历数组
+		        var str = '';
+		        for(var h in strs[i]){//遍历集合
+			        str+='<td>'+strs[i][h]+'</td>';
+		        }
+		        document.getElementById("table").innerHTML+='' +
+                    '<tr class="aaa" style="font-size: 16px;" align="center" >'+str+'</tr>';//每循环一次添加一条数据
+	        }
+        }
+        function liminputcolor(choose){
+	        document.getElementById("inputs").childNodes[choose-1].style.backgroundColor="pink";
+        }
+        //初始化，当前页面显示为第一页
+        limits();//页面按钮生成
+        document.getElementById("inputs").childNodes[0].style.backgroundColor="pink";//第一个按钮的背景颜色为红色
+        tablestr(1);//table数据显示
+    </script>
+                        </tbody>
+                    </table>
+				</div>
+			</div>
+		<!--遮罩层-->
+		<div class="bgPop"></div>
+		<!--弹出框-->
+		<div class="pop">
+		    <div class="pop-top">
+{#		        报警记录#}
+		        <span class="pop-close">Ｘ</span>
+		    </div>
+		    <div class="pop-content">
+		        <table class="panel-table" bordercolor="#deefff" border="1">
+                    <thead bgcolor="#971212" align="center" >
+                        <tr height="38">
+                            <th>字段</th>
+                            <th>字段</th>
+                            <th>字段</th>
+                            <th>字段</th>
+                            <th>字段</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    <tr class="aaa" style="font-size: 16px;" align="center" >
+                        <td>&nbsp;</td>
+                        <td>&nbsp;</td>
+                        <td>&nbsp;</td>
+                        <td>&nbsp;</td>
+                        <td>&nbsp;</td>
+                    </tr>
+                    <tr class="aaa" style="font-size: 16px;" align="center" >
+                        <td>&nbsp;</td>
+                        <td>&nbsp;</td>
+                        <td>&nbsp;</td>
+                        <td>&nbsp;</td>
+                        <td>&nbsp;</td>
+                    </tr>
+                    <tr class="aaa" style="font-size: 16px;" align="center" >
+                        <td>&nbsp;</td>
+                        <td>&nbsp;</td>
+                        <td>&nbsp;</td>
+                        <td>&nbsp;</td>
+                        <td>&nbsp;</td>
+                    </tr>
+                    
+                    <tr class="aaa" style="font-size: 16px;" align="center" >
+                        <td>&nbsp;</td>
+                        <td>&nbsp;</td>
+                        <td>&nbsp;</td>
+                        <td>&nbsp;</td>
+                        <td>&nbsp;</td>
+                    </tr>
+                    </tbody>
+                </table>
+		    </div>
+		    <div class="pop-foot">
+		        <input type="button" value="确定" class="pop-cancel pop-close">
+		    </div>
+		</div>
+		<script>
+		    $(document).ready(function () {
+		        $('.pop-close').click(function () {
+		            $('.bgPop,.pop').hide();
+		        });
+		        $('.click_pop').click(function () {
+		            $('.bgPop,.pop').show();
+		        });
+		    })
+		
+		</script>
+		<!--遮罩层-->
+		<div class="bgPop2"></div>
+		<!--弹出框-->
+		<div class="pop2">
+		    <div class="pop-top">
+{#		        历史记录#}
+		        <span class="pop-close">Ｘ</span>
+		    </div>
+		    <div class="pop-content">
+		        <table class="panel-table" bordercolor="#deefff" border="1">
+                    <thead bgcolor="#10aaa5" align="center" >
+                        <tr height="38">
+                            <th>字段</th>
+                            <th>字段</th>
+                            <th>字段</th>
+                            <th>字段</th>
+                            <th>字段</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    <tr class="aaa" style="font-size: 16px;" align="center" >
+                        <td>&nbsp;</td>
+                        <td>&nbsp;</td>
+                        <td>&nbsp;</td>
+                        <td>&nbsp;</td>
+                        <td>&nbsp;</td>
+                    </tr>
+                    <tr class="aaa" style="font-size: 16px;" align="center" >
+                        <td>&nbsp;</td>
+                        <td>&nbsp;</td>
+                        <td>&nbsp;</td>
+                        <td>&nbsp;</td>
+                        <td>&nbsp;</td>
+                    </tr>
+                    <tr class="aaa" style="font-size: 16px;" align="center" >
+                        <td>&nbsp;</td>
+                        <td>&nbsp;</td>
+                        <td>&nbsp;</td>
+                        <td>&nbsp;</td>
+                        <td>&nbsp;</td>
+                    </tr>
+                    
+                    <tr class="aaa" style="font-size: 16px;" align="center" >
+                        <td>&nbsp;</td>
+                        <td>&nbsp;</td>
+                        <td>&nbsp;</td>
+                        <td>&nbsp;</td>
+                        <td>&nbsp;</td>
+                    </tr>
+                    </tbody>
+                </table>
+		    </div>
+		    <div class="pop-foot">
+		        <input type="button" value="确定" class="pop-cancel pop-close">
+		    </div>
+		</div>
+		<script>
+		    $(document).ready(function () {
+		        $('.pop-close').click(function () {
+		            $('.bgPop2,.pop2').hide();
+		        });
+		        $('.click_pop2').click(function () {
+		            $('.bgPop2,.pop2').show();
+		        });
+		    })
+		
+		</script>
+		<!--遮罩层-->
+		<div class="bgPop3"></div>
+		<!--弹出框-->
+		<div class="pop3">
+		    <div class="pop-top">
+		        组态应用
+		        <span class="pop-close">Ｘ</span>
+		    </div>
+		    <div class="pop-content">
+		        组态应用
+		    </div>
+		    <div class="pop-foot">
+		        <input type="button" value="确定" class="pop-cancel pop-close">
+		    </div>
+		</div>
+
+		<script>
+		    $(document).ready(function () {
+		        $('.pop-close').click(function () {
+		            $('.bgPop3,.pop3').hide();
+		        });
+		        $('.click_pop3').click(function () {
+		            $('.bgPop3,.pop3').show();
+		        });
+		    })
+		</script>
+		<script type="text/javascript" src="{{ url_for('static', filename='js/jquery.min.js')}}"></script>
+		<script type="text/javascript" src="{{ url_for('static', filename='js/echarts.min.js')}}"></script>
+{#		<script type="text/javascript" src="{{ url_for('static', filename='js/china.js')}}"></script>#}
+        <script type="text/javascript" src="{{ url_for('static', filename='js/vue.min.js')}}"></script>
+{#        <script type="text/javascript" src="{{ url_for('static', filename='js/map.js')}}"></script>#}
+		<script type="text/javascript" src="{{ url_for('static', filename='js/times.js')}}"></script>
+		<script type="text/javascript" src="{{ url_for('static', filename='js/DTU.js')}}"></script>
+{#		<script type="text/javascript" src="{{ url_for('static', filename='js/PLC.js')}}"></script>#}
+		<script type="text/javascript" src="{{ url_for('static', filename='js/online.js')}}"></script>
+		<script type="text/javascript" src="{{ url_for('static', filename='js/industry.js')}}"></script>
+        <script type="text/javascript" src="{{ url_for('static', filename='js/show1.js')}}"></script>
+		<script type="text/javascript" src="{{ url_for('static', filename='js/data.js')}}"></script>
+        <script type="text/javascript">
+    	    var server = {
+      	           content1:{{x_data[0]|safe}},
+                   content2:{{x_data[4]|safe}},
+                   content3:{{x_data[3]|safe}},
+                   content4:{{x_data[3][0:30]|safe}}
+  	    };
+    	    var x_data = {
+      	           content1:{{x_data[1]|safe}},
+                   content2:{{x_data[2]|safe}},
+                   content3:{{x_data[6]|safe}},
+                   content4:{{x_data[2][0:30]|safe}}
+  	    };
+	   </script>
+	</body>
+</html>

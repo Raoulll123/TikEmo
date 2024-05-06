@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css')}}">
+    <title>聚类评价</title>
+    <script src="{{ url_for('static', filename='js/jquery-2.2.1.min.js')}}"></script>
+    <script src="{{ url_for('static', filename='js/rem.js')}}"></script>
+    <script src="{{ url_for('static', filename='js/echarts.min.js')}}"></script>
+    <script src="{{ url_for('static', filename='js/index.js')}}"></script>
+    <script src="{{ url_for('static', filename='js/param.js')}}"></script>
+</head>
+<style>
+    /*使图片在浏览器中居中显示*/
+.bigImg {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+ /*图片向左移动自身宽度的50%, 向上移动自身高度的50%。*/
+    transform: translate(-50%,-50%);
+}
+/*遮罩层*/
+  .opacityBottom {
+        width: 100%;
+        height: 100%;
+        position: fixed;
+        background: rgba(0,0,0,0.8);
+        z-index: 1000;
+        top: 0;
+        left: 0;
+    }
+</style>
+<body>
+    <div class="t_container">
+        <header class="t_h_bg">
+            <span>聚类评价</span>
+                                <span style=" color: #e3fcff;font-size:24px; position: absolute; right: 100px;margin-top: -2.8%"><a href="index0">return</a></span>
+        </header>
+        <main class="t_main">
+            <div class="t_box">
+                <header class="t_title">
+                    <span>测试总类数</span>
+                    <span class="t_number">0——{{Tnumber|safe }}</span>
+                </header>
+                <div class="t_list">
+{#                    <div class="t_min">DBI<i class="down"></i></div>#}
+{#                    <div class="t_min">类内距离平方和&emsp;<i class="down"></i></div>#}
+{#                    <div class="t_min">测试总类数:&emsp;{{Tnumber|safe }}<i></i></div>#}
+                    <script type="text/javascript">
+                        var server = {
+      	           content1:{{ centernumber|safe}},
+                   content2:{{score|safe}},
+                            content3:{{score2|safe}},
+  	                     };
+                    </script>
+                </div>
+                <div>
+                    <div id="chart_1" class="echart" style="width: 94%; height: 2.45rem;margin-left: 3%"></div>
+                </div>
+            </div>
+            <div class="t_box">
+                <header class="t_title">
+                    <span>测试总类数</span>
+                    <span class="t_number">0——{{Tnumber|safe }}</span>
+                </header>
+                <div class="t_list">
+{#                    <div class="t_min">DBI<i class="down"></i></div>#}
+                    <div class="t_min">类内距离平方和&emsp;<i></i></div>
+{#                    <div class="t_min">测试总类数:&emsp;{{Tnumber|safe }}<i></i></div>#}
+                </div>
+                <div>
+                    <div id="chart_2" class="echart" style="width: 100%; height: 2.45rem;margin-left: -11.5%;margin-top: 2%"></div>
+                </div>
+            </div>
+            <div class="t_box">
+                <header class="t_title">
+                    <span>Kmeans聚类结果图</span>
+                </header>
+{#                <div id="chart_3" class="echart" style="width: 100%; height: 3rem;"></div>#}
+                 <div class="echart">
+                     <img src="{{ url_for('static', filename='TikTok_Kmeans_Better12.png')}}" style="width: 35%;height: 35%;margin-top: 1%;opacity: 0.95">
+{#                     <img src="{{ url_for('static', filename='gg.gif')}}" style="width: 35%;height: 35%;margin-left: 5%">#}
+                 </div>
+            </div>
+            <div class="t_box">
+                <header class="t_title">
+                    <span>DBSCAN聚类图</span>
+                </header>
+{#                <div id="chart_2" class="echart" style="width: 100%; height: 3rem;"></div>#}
+                <div class="echart">
+                                <img src="{{ url_for('static', filename='TikTok_bdscn_init.png')}}" style="width: 35%;height: 36%;margin-left: 2%;margin-top: 1%;opacity: 0.95">
+{#                    <img src="{{ url_for('static', filename='DBSCN_Quality_DBI_2.png')}}" style="width: 35%;height: 35%;margin-left: 5%;opacity: 0.95">#}
+                        </div>
+            </div>
+        </main>
+    </div>
+</body>
+<script type="text/javascript">
+$('img').click(function () {
+    //获取图片路径
+    var imgsrc = $(this).attr("src");
+    console.log(imgsrc);
+    var opacityBottom = '<div class="opacityBottom" style = "display:none"><img class="bigImg" src="' + imgsrc + '" style="width: 80%;height: 90%"></div>';
+    $(document.body).append(opacityBottom);
+    toBigImg();//变大函数
+
+});
+
+function toBigImg() {
+    $(".opacityBottom").addClass("opacityBottom");//添加遮罩层
+    $(".opacityBottom").show();
+    $("html,body").addClass("none-scroll");//下层不可滑动
+    $(".bigImg").addClass("bigImg");//添加图片样式
+    $(".opacityBottom").click(function () {//点击关闭
+        $("html,body").removeClass("none-scroll");
+        $(".opacityBottom").remove();
+    })}
+</script>
+</html>

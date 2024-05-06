@@ -1,0 +1,110 @@
+/*项目概览*/
+body{
+    height: 100vh;
+    background-image: url("../imgs/bg.png");
+    background-position: -150px -170px;
+}
+.data-box1 left_tb fl{
+    margin-top: 10%;
+}
+.none{display:none}
+.xmglan{ width:100%;color:#fff; padding:20px 0;}
+.xmgl_heard{ width:100%; display:block; overflow:hidden}
+.xmgl_heard li{ float:left; list-style:none; font-size:12px; height:24px; line-height:24px; text-align:center;background:#0068b7; width:50%; cursor:pointer; border-top:1px #032d60 solid;border-bottom:1px #032d60 solid}
+.xmgl_heard li.hove{ background:#000c3b}
+
+/*项目概览 */
+.xm_cszs{ font-size:12px; padding:10px 10px 0 10px; }
+.xm_cszs li { line-height:22px;overflow:hidden;margin-top: 20px}
+.xm_cszs li span{ color:#00ff00; padding:0 5px 0 10px}
+.xm_cszs li p{width:33%}
+.xm_cszs li p span{ color:#00ffff; padding:0}
+.xm_cszs li p cite{ color:#00ffff;}
+
+.lytj {width:100%;float: left;height:100px;}
+.wgrytj_bt{ padding:10px; clear:both; display:block;border-top:1px #032d60 solid; color:#fff}
+.wgrytj_tb{ width:463px;height:320px;padding-left:10px;text-align: center;align-items: center}
+
+
+
+.center_zs{ width:30%;}
+/*.box1-back{height:763px;background-image:-webkit-radial-gradient(250px 250px at 50% 50%,hsla(209,99%,32%,28),hsla(228,100%,0%,0));background-image:radial-gradient(250px 250px at 50% 50%,hsla(209,99%,32%,28),hsla(228,100%,0%,0))}*/
+.box1-back{height:763px;}
+/*问题等级*/
+.wenti_dj{ width:40%; float:left}
+.wenti_bg{ float:left; padding-top:10px; width:60%;}
+.wenti_bg table{border-collapse:collapse;border: 1px solid #00a0e9; color:#fff; width:95%}  
+.wenti_bg td{border-collapse:collapse; border: 1px solid #00a0e9; padding:2px 4px; }  
+.wenti_bg td.green{ color:#05d60f; text-align:center}  
+.wenti_bg td.orange{ color:#d75a07; text-align:center}  
+
+
+/* 自动轮播样式 */
+.banner-container{
+	width:470px;
+	height:400px;
+	/* 轮播图居中 */
+	margin:1rem auto;
+	/* 隐藏超出展示容器的内容 */
+	overflow: hidden;
+	position: relative;
+}
+
+.banner-container .banner-img-container {
+	width:2350px;
+	height:400px;
+	overflow: hidden;
+	position: absolute;
+	/* 开启弹性盒，让图片横向排列 */
+	display: flex;
+	animation: run 10s ease infinite;
+}
+
+.banner-container .banner-img-container img{
+	width:470px;
+	height:100%;
+}
+
+/* 动画关键帧 */
+@keyframes run {
+	0%,10%{
+		/* margin-left: 0; */
+		transform: translateX(0);
+	}
+	20%,30%{
+		/* margin-left: -1200px;; */
+		transform: translateX(-470px);
+	}
+	40%,50%{
+		/* margin-left: -2400px; */
+		transform: translateX(-940px);
+	}
+	60%,70%{
+		/* margin-left: -3600px; */
+		transform: translateX(-1410px);
+	}
+	80%,90%{
+		/* margin-left: -4800px; */
+		transform: translateX(-1880px);
+	}
+	100%{
+		/* margin-left: 0; */
+		transform: translateX(0);
+	}
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

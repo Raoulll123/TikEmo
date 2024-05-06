@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script src="https://d3js.org/d3.v6.min.js"></script>
+    <script src="d3-cloud-master/build/d3.layout.cloud.js"></script>
+  </head>
+
+  <body>
+    <div id="wordcloud"></div>
+
+    <script>
+      var words = [];
+      for (var i = 1; i <= 50; i++) {
+        words.push({ text: i, size: Math.random() * 90 });
+      }
+
+
+      // 获取容器元素
+      var container = d3.select("#wordcloud");
+
+      // 创建词云布局
+      var layout = d3.layout
+        .cloud()
+        .size([700, 500])
+        .words(words)
+        .padding(5)
+        .rotate(function () {
+          // return ~~(Math.random() * 2) * 90;
+          return (~~(Math.random() * 6) - 3) * 30;
+          // return 0;
+        })
+        .font("Impact")
+        .fontSize(function (d) {
+          return d.size;
+        })
+        .on("end", draw);
+
+      // 设置每个单词的颜色
+      layout.words().forEach(function (word) {
+        word.color = getRandomColor();
+      });
+
+      // 绘制词云
+      layout.start();
+
+      //绘制函数
+      function draw(words) {
+        d3.select("body")
+          .append("svg")
+          .attr("width", layout.size()[0])
+          .attr("height", layout.size()[1])
+          .attr("style", "background-color:pink")
+          .append("g")
+          .attr(
+            "transform",
+            "translate(" +
+              layout.size()[0] / 2 +
+              "," +
+              layout.size()[1] / 2 +
+              ")"
+          )
+          .selectAll("text")
+          .data(words)
+          .enter()
+          .append("text")
+          .style("font-size", function (d) {
+            return d.size + "px";
+          })
+          .style("font-family", "Impact")
+          .style("fill", function (d) {
+            return d.color;
+          }) // 设置每个单词的颜色
+          .attr("text-anchor", "middle")
+          .attr("transform", function (d) {
+            return "translate(" + [d.x, d.y] + ")rotate(" + d.rotate + ")";
+          })
+          .text(function (d) {
+            return d.text;
+          });
+      }
+
+      // 生成随机颜色
+      function getRandomColor() {
+        var letters = "0123456789ABCDEF";
+        var color = "#";
+        for (var i = 0; i < 6; i++) {
+          color += letters[Math.floor(Math.random() * 16)];
+        }
+        return color;
+      }
+    </script>
+  </body>
+</html>
+
+

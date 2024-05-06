@@ -1,0 +1,565 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="Generator" content="EditPlus®">
+<meta name="Author" content="">
+<meta name="Keywords" content="">
+<meta name="Description" content="">
+<link href="{{ url_for('static', filename='css/public.css')}}" rel="stylesheet" type="text/css"/>
+<link href="{{ url_for('static', filename='css/jianlisw.css')}}" rel="stylesheet" type="text/css"/>
+<script src="https://d3js.org/d3.v6.min.js"></script>
+<script src="../static/js/d3-cloud-master/d3-cloud-master/build/d3.layout.cloud.js"></script>
+<title>LDA总结果展示</title>
+</head>
+<style>
+    /*使图片在浏览器中居中显示*/
+.bigImg {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+ /*图片向左移动自身宽度的50%, 向上移动自身高度的50%。*/
+    transform: translate(-50%,-50%);
+}
+/*遮罩层*/
+  .opacityBottom {
+        width: 100%;
+        height: 100%;
+        position: fixed;
+        {#background: rgba(0,0,0,0.8);#}
+        z-index: 1000;
+        top: 0;
+        left: 0;
+    }
+</style>
+<body>
+<!-- banner start -->
+<div class="caption-title">
+    <i class="fl"><img src="{{ url_for('static', filename='imgs/title-left.png')}}" ></i>
+    <span class="biaoti fl">LDA总结果展示</span>
+     <span style=" color: #00e4ff;font-size:24px; position: absolute; right: 60px;"><a href="index0">return</a></span>
+    <i class="fr"><img src="{{ url_for('static', filename='imgs/title-right.png')}}" ></i>
+
+</div>
+<!-- 内容正文 -->
+<div class="zhenwen">
+       <div class="left_zs fl" style="margin-top: 3.5vh">
+    	<!-- 项目概览 -->
+        <div class="data-box1 left_tb fl">
+            <i class="topL"></i>
+            <i class="topR"></i>
+            <i class="bottomL"></i>
+            <i class="bottomR"></i>
+            <div class="data-title">
+                <b class="data-title-left fl">[</b>
+                <span>LDA——Info</span>
+                <b class="data-title-right fr">]</b>
+            </div>
+                <!-- 项目概览-->
+            <div class="xmglan">        
+{#                <ul class="xmgl_heard">#}
+{#                    <li>LDA——Info</li>#}
+{#                    <li class="hove">历史</li>#}
+{#                </ul>            #}
+                <div id="xmgl_cen">              
+                    <div class="xmgl_tb">
+                    	<ul class="xm_cszs">
+                           <li style="margin-top: 10px">热榜视频:<span>{{alarm.alarm}}</span>个</li>
+                           <li>博主数<span>{{alarm.fault}}</span>位</li>
+                           <li>
+                                <p>LDA Bloggers:<span>10</span></p>
+                                <p style="margin-top:20px">LDA video:<span>10</span></p>
+                                <p style="margin-top:20px;margin-bottom: 3.5vh">LDA title:<span>10</span></p>
+                           </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>     
+        </div>     
+    	<!-- 项目人员信息状态 -->
+        <div class="data-box1 left_tb fl mtop40" style="height: 100%;margin-top: 5vh">
+            <i class="topL"></i>
+            <i class="topR"></i>
+            <i class="bottomL"></i>
+            <i class="bottomR"></i>
+            <div class="data-title">
+                <b class="data-title-left fl">[</b>
+                <span>LDA Video</span>
+                <b class="data-title-right fr">]</b>
+            </div>
+                <!-- 项目人员信息状态-->
+            <div class="xmglan">        
+{#                <div id="lytj" class="lytj"></div>   #}
+                
+              	<div class="wgrytj">
+{#                	<span class="wgrytj_bt">LDA——Video</span>#}
+                	<div class="wgrytj_tb" style="margin-left: -2.4%">
+                        <div id="wordcloud"></div>
+                        <script>
+                          {#var words_probs = {{ LDA_UPs|tojson }};  // 从Flask获取词和对应的概率#}
+                          {##}
+                          {#var words = words_probs.map(function(word_prob) {#}
+                          {#  return { text: word_prob[0], size: word_prob[1] * 1000 };  // 将词和对应的概率转换为词云需要的格式#}
+                          {#});#}
+
+
+                              var words_probs = {{ LDA_UPs|tojson }};  // 从Flask获取词和对应的概率
+
+                              var seen = {};  // 用于记录已经出现过的词
+                              var words = words_probs.reduce(function(acc, word_prob) {
+                                  if (!seen[word_prob[0]]) {  // 如果这个词还没有出现过
+                                    seen[word_prob[0]] = true;  // 记录这个词已经出现过
+                                    acc.push({ text: word_prob[0], size: word_prob[1] * 1000 });  // 将这个词加入到新的数组中
+                                  }
+                                  return acc;
+                              }, []);
+                          // 获取容器元素
+                          var container = d3.select("#wordcloud");
+
+                          // 创建词云布局
+                          var layout = d3.layout
+                            .cloud()
+                            .size([400, 300])
+                            .words(words)
+                            .padding(5)
+                            .rotate(function () {
+                              // return ~~(Math.random() * 2) * 90;
+                              return (~~(Math.random() * 6) - 3) * 30;
+                              // return 0;
+                            })
+                            .font("Impact")
+                            .fontSize(function (d) {
+                              return d.size;
+                            })
+                            .on("end", draw);
+
+                          // 设置每个单词的颜色
+                          layout.words().forEach(function (word) {
+                            word.color = getRandomColor();
+                          });
+
+                          // 绘制词云
+                          layout.start();
+
+                          //绘制函数
+                          function draw(words) {
+                            d3.select("#wordcloud")
+                              .append("svg")
+                              .attr("width", layout.size()[0])
+                              .attr("height", layout.size()[1])
+                              .attr("style", "background-color:transparent")
+                              .append("g")
+                              .attr(
+                                "transform",
+                                "translate(" +
+                                  layout.size()[0] / 2 +
+                                  "," +
+                                  layout.size()[1] / 2 +
+                                  ")"
+                              )
+                              .selectAll("text")
+                              .data(words)
+                              .enter()
+                              .append("text")
+                              .style("font-size", function (d) {
+                                return d.size + "px";
+                              })
+                              .style("font-family", "Impact")
+                              .style("fill", function (d) {
+                                return d.color;
+                              }) // 设置每个单词的颜色
+                              .attr("text-anchor", "middle")
+                              .attr("transform", function (d) {
+                                return "translate(" + [d.x, d.y] + ")rotate(" + d.rotate + ")";
+                              })
+                              .text(function (d) {
+                                return d.text;
+                              });
+                          }
+
+                          // 生成随机颜色
+                          function getRandomColor() {
+                            var letters = "0123456789ABCDEF";
+                            var color = "#";
+                            for (var i = 0; i < 6; i++) {
+                              color += letters[Math.floor(Math.random() * 16)];
+                            }
+                            return color;
+                          }
+                    </script>
+{#                        <div>#}
+{#                                <img src="{{ url_for('static', filename='LDA/TikTok_theme.png')}}" style="width: 100%;height: 90%">#}
+{#                        </div>#}
+                    </div>
+                </div>
+                
+{#                <div class="wgrytj">#}
+{#                	<span class="wgrytj_bt">各公司现场人员统计</span>#}
+{#                	<div class="wgrytj_tb">#}
+{#                     <div id="xcrytj" style="height:163px"></div>                    #}
+{#                    </div>#}
+{#                </div>#}
+            </div>     
+        </div>
+                
+    </div>
+    
+	  <!--仪表盘等展示-->
+    <div class="center_zs fl">
+        <div class="data-box1 box1-back" style="height: 95%">
+            <div class="data-title">
+                <b class="data-title-left">[</b>
+                <span>Tiktok Top influencer展示</span>
+                <b class="data-title-right">]</b>
+            </div>
+            <div style="margin-top: 1%;">
+                <i class="topL"></i>
+                <i class="topR"></i>
+                <i class="bottomL"></i>
+                <i class="bottomR"></i>
+                <a target="_blank" href="https://www.mcndata.cn/rank/douyin/?rtype=fans_total">
+{#                    <img src="{{ url_for('static', filename='LDA/2020_UP.jpeg')}}" style="width: 100%;height: 110%">#}
+                    <div class="banner-container">
+                        <!-- 创建图片存储容器 -->
+                        <div class="banner-img-container">
+                            <img src="../static/img/blogger2.png" alt="">
+                            <img src="../static/img/blogger.png" alt="">
+                            <img src="../static/img/blogger4.png" alt="">
+                            <img src="../static/img/blogger4.jpg" alt="">
+                            <img src="../static/img/blogger3.jpg" alt="">
+                        </div>
+                    </div>
+                </a>
+            </div>
+            <div>
+                <i class="topL"></i>
+                <i class="topR"></i>
+                <i class="bottomL"></i>
+                <i class="bottomR"></i>
+                <table class="panel-table"bordercolor="#010e6b" border="1" style="width: 99.6%;margin-top: 5vh;margin-bottom: 5vh">
+                    <thead bgcolor="#010e6b" align="center" >
+                    <tr height="40">
+                        <th colspan="6" style="color: #FFFFFF;font-size: 20px"><img src="{{ url_for('static', filename='imgs/icon04.png')}}" style="margin-right: 20px"/> Top100视频&Blogger
+                          <span id="inputs" class="t_table" style="margin-left: 5%">&emsp;</span>
+                        </th>
+                    </tr>
+                    </thead>
+                    <tbody id="table">
+                    <script>
+                var server = {
+                        info:{{ info|safe }}
+                         }
+                    </script>
+                    <script>
+        var strs = server.info;
+        var len = 11;
+        //确认该集合会被分成几页，分成几页就代表需要几个页面按钮,封装封装方便多次运用
+        function limits(){
+	        var countLim = Math.ceil(strs.length/len);//余数也算是一页，这里用向上取整
+	        //确认页面按钮个数，进行循环显示到页面上
+	        document.getElementById("inputs").innerHTML='';//清空一下
+	        for(var i=1;i<=countLim;i++){
+		        document.getElementById("inputs").innerHTML+='<input type="button" value="'+i+'" onclick="limitinput(this)"/>';//每个页面按钮都绑定上一个点击事件
+	        }
+        }
+        var choose = 0;//创建一个全局变量用来保存当前处于第几个页面
+        //点击按钮获取当前按钮的值进行选择当前table是第几页数据
+        function limitinput(ids){
+	        choose = ids.value;
+	        tablestr(choose);//刷新table数据
+	        limits();//刷新页面按钮
+            ids.style.backgroundColor='pink';//当前点击的页面按钮背景颜色改变为红色
+	        liminputcolor(choose);//页面按钮变色
+        }
+        //通过当前页面按钮和页面数据长度将数据放进table内，封装封装！！！必须封装
+        function tablestr(num){//num是指当前哪个页面
+	        var num1 = (num-1)*len;//确定循环开始的集合下标
+	        var num2 = num*len;//确定循环结束的结束下标
+	        document.getElementById("table").innerHTML='';//清空一下
+            document.getElementById("table").innerHTML+=' <tr class="aaa" align="center">\n' +
+                '                        \t<td style="color: #FFFFFF; font-size: 14px; padding: 1px 0;">标题</td>\n' +
+                '                            <td style="color: #FFFFFF; font-size: 14px; padding: px 0;">作者</td>\n' +
+                '                        </tr>';
+	        for(var i=num1;i<num2;i++){//遍历数组
+		        var str = '';
+		        for(var h in strs[i]){//遍历集合
+			        str+='<td>'+strs[i][h]+'</td>';
+		        }
+		        document.getElementById("table").innerHTML+='' +
+                    '<tr class="aaa" style="color: #FFFFFF;font-size: 16px;padding:10px 0" align="center" >'+str+'</tr>';//每循环一次添加一条数据
+	        }
+        }
+        function liminputcolor(choose){
+	        document.getElementById("inputs").childNodes[choose-1].style.backgroundColor="pink";
+        }
+        //初始化，当前页面显示为第一页
+        limits();//页面按钮生成
+        document.getElementById("inputs").childNodes[0].style.backgroundColor="pink";//第一个按钮的背景颜色为红色
+        tablestr(1);//table数据显示
+    </script>
+                        </tbody>
+                    </table>
+            </div>
+        </div>
+    </div>    
+    <!--右侧图表展示 -->
+    <div class="right_zs fl" style="height: 100%;margin-top: 2vh">
+    	 <!-- 巡检风险状态 -->        
+        <div class="data-box1 right_tb" style="height: 32vh">
+            <i class="topL"></i>
+            <i class="topR"></i>
+            <i class="bottomL"></i>
+            <i class="bottomR"></i>
+            <div class="data-title">
+                <b class="data-title-left">[</b>
+                <span>LDA Bloggers</span>
+                <b class="data-title-right">]</b>
+            </div>
+            <div class="ryclts" style="height: 50vh;align-items: center;text-align: center">
+{#              <div id="xjfxzt" style="height:300px"></div>#}
+                <div id="wordcloud1"></div>
+                        <script>
+                          {#var words_probs = {{ LDA_title|tojson }};  // 从Flask获取词和对应的概率#}
+                          {##}
+                          {#var words = words_probs.map(function(word_prob) {#}
+                          {#  return { text: word_prob[0], size: word_prob[1] * 1000 };  // 将词和对应的概率转换为词云需要的格式#}
+                          {#});#}
+
+                          var words_probs = {{ LDA_title|tojson }};  // 从Flask获取词和对应的概率
+
+                              var seen = {};  // 用于记录已经出现过的词
+                              var words = words_probs.reduce(function(acc, word_prob) {
+                                  if (!seen[word_prob[0]]) {  // 如果这个词还没有出现过
+                                    seen[word_prob[0]] = true;  // 记录这个词已经出现过
+                                    acc.push({ text: word_prob[0], size: word_prob[1] * 1000 });  // 将这个词加入到新的数组中
+                                  }
+                                  return acc;
+                              }, []);
+
+                          // 获取容器元素
+                          var container = d3.select("#wordcloud1");
+
+                          // 创建词云布局
+                          var layout = d3.layout
+                            .cloud()
+                            .size([400, 300])
+                            .words(words)
+                            .padding(5)
+                            .rotate(function () {
+                              // return ~~(Math.random() * 2) * 90;
+                              return (~~(Math.random() * 6) - 3) * 30;
+                              // return 0;
+                            })
+                            .font("Impact")
+                            .fontSize(function (d) {
+                              return d.size;
+                            })
+                            .on("end", draw);
+
+                          // 设置每个单词的颜色
+                          layout.words().forEach(function (word) {
+                            word.color = getRandomColor();
+                          });
+
+                          // 绘制词云
+                          layout.start();
+
+                          //绘制函数
+                          function draw(words) {
+                            d3.select("#wordcloud1")
+                              .append("svg")
+                              .attr("width", layout.size()[0])
+                              .attr("height", layout.size()[1])
+                              .attr("style", "background-color:transparent")
+                              .append("g")
+                              .attr(
+                                "transform",
+                                "translate(" +
+                                  layout.size()[0] / 2 +
+                                  "," +
+                                  layout.size()[1] / 2 +
+                                  ")"
+                              )
+                              .selectAll("text")
+                              .data(words)
+                              .enter()
+                              .append("text")
+                              .style("font-size", function (d) {
+                                return d.size + "px";
+                              })
+                              .style("font-family", "Impact")
+                              .style("fill", function (d) {
+                                return d.color;
+                              }) // 设置每个单词的颜色
+                              .attr("text-anchor", "middle")
+                              .attr("transform", function (d) {
+                                return "translate(" + [d.x, d.y] + ")rotate(" + d.rotate + ")";
+                              })
+                              .text(function (d) {
+                                return d.text;
+                              });
+                          }
+
+                          // 生成随机颜色
+                          function getRandomColor() {
+                            var letters = "0123456789ABCDEF";
+                            var color = "#";
+                            for (var i = 0; i < 6; i++) {
+                              color += letters[Math.floor(Math.random() * 16)];
+                            }
+                            return color;
+                          }
+                    </script>
+{#                        <div>#}
+{#                                <img src="{{ url_for('static', filename='LDA/TikTok_theme.png')}}" style="width: 100%;height: 90%">#}
+{#                        </div>#}
+                    </div>
+            </div>
+
+        <!-- 风险变化趋势 -->
+            <div class="data-box1 right_tb mtop40" style="height: 38.5vh;margin-top: 5.5vh">
+                <i class="topL"></i>
+                <i class="topR"></i>
+                <i class="bottomL"></i>
+                <i class="bottomR"></i>
+                <div class="data-title">
+                    <b class="data-title-left">[</b>
+                    <span>LDA——title</span>
+                    <b class="data-title-right">]</b>
+                </div>
+                  <!--问题等级-->
+                <div class="ryclts">
+                    <div class="clearfix" style="align-items: center;text-align: center;margin-top: 25px">
+    {#                    <div id="fxbhqs" style="height:300px"></div>#}
+    {#                    <div><img src="{{ url_for('static', filename='LDA/TikTok_theme_title.png')}}" style="width:100%;height: 300px;padding: 20px 0"></div>#}
+                        <div id="wordcloud2"></div>
+                            <script>
+                              var words_probs = {{ LDA_theme|tojson }};  // 从Flask获取词和对应的概率
+
+                              var words = words_probs.map(function(word_prob) {
+                                return { text: word_prob[0], size: word_prob[1] * 1000 };  // 将词和对应的概率转换为词云需要的格式
+                              });
+
+
+                              // 获取容器元素
+                              var container = d3.select("#wordcloud2");
+
+                              // 创建词云布局
+                              var layout = d3.layout
+                                .cloud()
+                                .size([400, 300])
+                                .words(words)
+                                .padding(5)
+                                .rotate(function () {
+                                  // return ~~(Math.random() * 2) * 90;
+                                  return (~~(Math.random() * 6) - 3) * 30;
+                                  // return 0;
+                                })
+                                .font("Impact")
+                                .fontSize(function (d) {
+                                  return d.size;
+                                })
+                                .on("end", draw);
+
+                              // 设置每个单词的颜色
+                              layout.words().forEach(function (word) {
+                                word.color = getRandomColor();
+                              });
+
+                              // 绘制词云
+                              layout.start();
+
+                              //绘制函数
+                              function draw(words) {
+                                d3.select("#wordcloud2")
+                                  .append("svg")
+                                  .attr("width", layout.size()[0])
+                                  .attr("height", layout.size()[1])
+                                  .attr("style", "background-color:transparent")
+                                  .append("g")
+                                  .attr(
+                                    "transform",
+                                    "translate(" +
+                                      layout.size()[0] / 2 +
+                                      "," +
+                                      layout.size()[1] / 2 +
+                                      ")"
+                                  )
+                                  .selectAll("text")
+                                  .data(words)
+                                  .enter()
+                                  .append("text")
+                                  .style("font-size", function (d) {
+                                    return d.size + "px";
+                                  })
+                                  .style("font-family", "Impact")
+                                  .style("fill", function (d) {
+                                    return d.color;
+                                  }) // 设置每个单词的颜色
+                                  .attr("text-anchor", "middle")
+                                  .attr("transform", function (d) {
+                                    return "translate(" + [d.x, d.y] + ")rotate(" + d.rotate + ")";
+                                  })
+                                  .text(function (d) {
+                                    return d.text;
+                                  });
+                              }
+
+                              // 生成随机颜色
+                              function getRandomColor() {
+                                var letters = "0123456789ABCDEF";
+                                var color = "#";
+                                for (var i = 0; i < 6; i++) {
+                                  color += letters[Math.floor(Math.random() * 16)];
+                                }
+                                return color;
+                              }
+                        </script>
+    {#                        <div>#}
+    {#                                <img src="{{ url_for('static', filename='LDA/TikTok_theme.png')}}" style="width: 100%;height: 90%">#}
+    {#                        </div>#}
+                    </div>
+            </div>
+        </div>
+{#                <div class="wgrytj">                	#}
+{#                	<div class="wenti_dj">#}
+{#                    	 <div id="wentidj" style="height:100px"></div>#}
+                         {#                    </div>#}
+{#                    <div  class="wenti_bg">#}
+{##}
+{#                    </div>#}
+{#                </div>#}
+            </div> 
+        </div>   
+    </div>
+
+</div>      
+        
+<div class="h30 clearfix"></div>
+</body>
+<script src="{{ url_for('static', filename='js/jquery.min.js')}}"></script>
+<script src="{{ url_for('static', filename='js/echarts.min.js')}}"></script>
+<script src="{{ url_for('static', filename='js/monitor_sw.js')}}"></script>
+<script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.js"></script>
+<script type="text/javascript">
+$('img').click(function () {
+    //获取图片路径
+    var imgsrc = $(this).attr("src");
+    console.log(imgsrc);
+    var opacityBottom = '<div class="opacityBottom" style = "display:none"><img class="bigImg" src="' + imgsrc + '" style="width: 80%;height: 90%"></div>';
+    $(document.body).append(opacityBottom);
+    toBigImg();//变大函数
+
+});
+
+function toBigImg() {
+    $(".opacityBottom").addClass("opacityBottom");//添加遮罩层
+    $(".opacityBottom").show();
+    $("html,body").addClass("none-scroll");//下层不可滑动
+    $(".bigImg").addClass("bigImg");//添加图片样式
+    $(".opacityBottom").click(function () {//点击关闭
+        $("html,body").removeClass("none-scroll");
+        $(".opacityBottom").remove();
+    })}
+</script>
+</html>

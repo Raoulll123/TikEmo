@@ -1,0 +1,745 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/index6.css')}}">
+    <title>情感分析分类展示</title>
+    <script src="{{ url_for('static', filename='js/jquery-2.2.1.min.js')}}"></script>
+    <script src="{{ url_for('static', filename='js/rem6.js')}}"></script>
+    <script src="{{ url_for('static', filename='js/echarts.min.js')}}"></script>
+    <script src="{{ url_for('static', filename='js/guangxi.js')}}"></script>
+{#    <script src="{{ url_for('static', filename='js/index6.js')}}"></script>#}
+</head>
+<body>
+    <div class="t_container">
+        <header class="t_header">
+            <span>情感分析分类展示
+                <span style=" color: #f9fffe;font-size:18px; position: absolute;margin-top: 7.5%;margin-left: 92%"><a href="index0">return</a></span>
+            </span>
+        </header>
+        <main class="t_main">
+            <div class="t_left_box">
+                <img class="t_l_line" src="{{ url_for('static', filename='img/left_line.png')}}" alt="">
+                <div class="t_mbox t_rbox">
+                    <i></i>
+                    <span>今日分析总数</span>
+                    <h2>{{ numSum|safe }}</h2>
+                </div>
+                <div class="t_mbox t_gbox">
+                    <i></i>
+                    <span>今日积极情感数</span>
+                    <h2>{{ positiveSum|safe }}</h2>
+                </div>
+                <div class="t_mbox t_ybox">
+                    <i></i>
+                    <span>今日消极情感数</span>
+                    <h2>{{ negativeSum|safe }}</h2>
+                </div>
+                <img class="t_r_line" src="{{ url_for('static', filename='img/right_line.png')}}" alt="">
+            </div>
+            <div class="t_center_box">
+                <div class="t_top_box">
+                    <img class="t_l_line" src="{{ url_for('static', filename='img/left_line.png')}}" alt="">
+                    <ul class="t_nav">
+                        <li>
+                            <span>sum</span>
+                            <h1>{{ numSum|safe }}</h1>
+                            <i></i>
+                        </li>
+                        <li>
+                            <span>positive—rate</span>
+                            <h1>{{ positive_rateRate|safe }}%</h1>
+                            <i></i>
+                        </li>
+                        <li>
+                            <span>negative—rate</span>
+                            <h1>{{ negative_rateRate|safe }}%</h1>
+                        </li>
+                    </ul>
+                    <img class="t_r_line" src="{{ url_for('static', filename='img/right_line.png')}}" alt="">
+                </div>
+                <div class="t_bottom_box">
+                    <img class="t_l_line" src="{{ url_for('static', filename='img/left_line.png')}}" alt="">
+                    <div id="chart_3" class="echart" style="width: 100%; height: 3.52rem;margin-left: -5%;margin-top: 2%"></div>
+                    <img class="t_r_line" src="{{ url_for('static', filename='img/right_line.png')}}" alt="">
+                </div>
+            </div>
+            <div class="t_right_box">
+                    <img class="t_l_line" src="{{ url_for('static', filename='img/left_line.png')}}" alt="">
+                    <div id="chart_4" class="echart" style="width: 100%; height: 5.2rem; position: absolute;"></div>
+                    <header class="t_b_h">
+                        <span>分析视频总类别数&emsp; &emsp;</span>
+{#                        <img src="{{ url_for('static', filename='img/end.png')}}" alt="">#}
+                        <h3>{{ number|safe }}<span>类</span></h3>
+                    </header>
+{#                    <div class="t_b_m">#}
+{#                        <img src="{{ url_for('static', filename='cheer.gif')}}" alt="" style="height: 75%;margin-top: -8%">#}
+{#                    </div>#}
+                    <img class="t_r_line" src="{{ url_for('static', filename='img/right_line.png')}}" alt="">
+            </div>
+            <div class="b_left_box">
+                    <img class="t_l_line" src="{{ url_for('static', filename='img/left_line.png')}}" alt="">
+                    <div id="chart_2" class="echart" style="width: 100%; height: 3.6rem;"></div>
+                    <img class="t_r_line" src="{{ url_for('static', filename='img/right_line.png')}}" alt="">
+            </div>
+            <div class="b_center_box">
+                    <img class="t_l_line" src="{{ url_for('static', filename='img/left_line.png')}}" alt="">
+                    <div id="chart_1" class="echart" style="width: 100%; height: 3.6rem;"></div>
+                    <img class="t_r_line" src="{{ url_for('static', filename='img/right_line.png')}}" alt="">
+            </div>
+            <div class="b_right_box">
+                    <img class="t_l_line" src="{{ url_for('static', filename='img/left_line.png')}}" alt="">
+                    <h1 class="t_title" style="margin-bottom: 2%;width: 100%">情感倾向数据查看&emsp;
+                        <span id="inputs" class="t_table" style="margin-top: -5%;top: -35%;">&emsp;
+                            <span style=" font-size:14px; position: absolute; color: #00f6ff "><a href="index0">return</a></span>
+                    </span>
+                    </h1>
+
+                <div>
+                    <table class="t_table">
+                        <thead>
+                            <tr>
+                                <th>category</th>
+                                <th>positive</th>
+                                <th>negative</th>
+                                <th>positive rate</th>
+                                <th>negative rate</th>
+                            </tr>
+                        </thead>
+                        <tbody id="table">
+                        </tbody>
+                    </table>
+                </div>
+                    <img class="t_r_line" src="{{ url_for('static', filename='img/right_line.png')}}" alt="">
+            </div>
+        </main>
+    </div>
+
+</body>
+</html>
+<script type="text/javascript">
+        var server = {
+        categorys:{{ categorys|safe }},
+        negative:{{ negative|safe }},
+        positive:{{ positive|safe }},
+        num:{{ num|safe }},
+        negative_rate:{{ negative_rate|safe }},
+        positive_rate:{{ positive_rate|safe }},
+        emotion_datas:{{ emotion_datas|safe }},
+        positiveSum:{{ positiveSum|safe }},
+        negativeSum:{{ negativeSum|safe }},
+        numSum:{{ numSum|safe }},
+        negative_rateRate:{{ negative_rateRate|safe }},
+        positive_rateRate:{{ positive_rateRate|safe }}
+    };
+</script>
+<script type="text/javascript">
+    $(function () {
+    echart_1();
+    echart_2();
+    echart_3();
+    echart_4();
+
+    function echart_1() {
+        // 基于准备好的dom，初始化echarts实例
+        var myChart = echarts.init(document.getElementById('chart_1'));
+        var metrodates = ['情感', '美食', '舞蹈','动漫', '音乐', '游戏', '经济', '科创', '教育','运动', '汽车', '影视'];
+        var figures = server.positive;
+        var result = metrodates.map((name,i) => ({name, value: figures[i]}));
+        option = {
+            title: {
+                text: '今日积极情感占比统计',
+                top: 8,
+                left: 20,
+                textStyle: {
+                    fontSize: 18,
+                    color: '#fff'
+                }
+            },
+    toolbox: {
+        show: true,
+        feature: {
+            dataView: {show: true, readOnly: false},
+            // magicType: {show: true, type: ['line', 'bar']},
+            restore: {show: true},
+            saveAsImage: {show: true}
+        }
+    },
+            tooltip: {
+                trigger: 'item',
+                formatter: "{a} <br/>{b}: {c} ({d}%)",
+
+            },
+            legend: {
+                orient: 'vertical',
+                left: 'left',
+                right: 20,
+                top: 35,
+                data: [1, 2, 3, 4, 5, 6,7, 8, 9, 10, 11, 12],
+                textStyle: {
+                    color: '#fff'
+                }
+            },
+            series: [{
+                name: '情感类别',
+                type: 'pie',
+                radius: ['0', '60%'],
+                center: ['50%', '60%'],
+                color: ['#cd8586', '#557b03', '#008af5','#0a82c7', '#0063ff', '#e1e9ea','#e72325', '#98e002', '#2ca3fd','#b4dbf3', '#cafa68', '#628db1'],
+                label: {
+                    normal: {
+                        formatter: '{b}\n{d}%'
+                    },
+
+                },
+                data: result
+            }]
+        };
+        // 使用刚指定的配置项和数据显示图表。
+        myChart.setOption(option);
+        window.addEventListener("resize", function () {
+            myChart.resize();
+        });
+    }
+
+    function echart_2() {
+        // 基于准备好的dom，初始化echarts实例
+        var myChart = echarts.init(document.getElementById('chart_2'));
+        var data = {
+            id: 'multipleBarsLines',
+            title: '分类情感倾向',
+            legendBar: ['积极', '消极'],
+            symbol: '', //数值是否带百分号        --默认为空 ''
+            legendLine: ['总'],
+            toolbox: {
+                    show: true,
+                 feature: {
+                dataView: {show: true, readOnly: false},
+                magicType: {show: true, type: ['line', 'bar']},
+                restore: {show: true},
+                saveAsImage: {show: true}
+                 }
+            },
+            xAxis:
+                ['情感', '美食', '舞蹈','动漫', '音乐', '游戏', '经济', '科创', '教育','运动', '汽车', '影视'],
+                {#server.categorys,#}
+                // ['一月', '二月', '三月', '四月', '五月', '六月','一月', '二月', '三月', '四月', '五月', '六月'],
+            yAxis: [
+                server.positive,
+                server.negative
+                // [2, 4, 5, 5, 1, 7,3, 6, 6, 1, 1, 3],
+                // [6, 6, 5, 6, 3, 6,5, 4, 4, 10, 3, 10]
+            ],
+            lines: [
+                server.num
+                // [8, 10, 10, 11, 4, 13,8, 10, 10, 11, 4, 13]
+            ],
+            barColor: ['#b4dbf3', '#0063ff', '#e1e9ea'], //柱子颜色 必填参数
+            lineColor: ['#f52a0f'], // 折线颜色
+
+        };
+        /////////////end/////////
+
+        var myData = (function test() {
+            var yAxis = data.yAxis || [];
+            var lines = data.lines || [];
+            var legendBar = data.legendBar || [];
+            var legendLine = data.legendLine || [];
+            var symbol = data.symbol || ' ';
+            var seriesArr = [];
+            var legendArr = [];
+            yAxis && yAxis.forEach((item, index) => {
+                legendArr.push({
+                    name: legendBar && legendBar.length > 0 && legendBar[index]
+                });
+                seriesArr.push({
+                    name: legendBar && legendBar.length > 0 && legendBar[index],
+                    type: 'bar',
+                    barGap: '0.5px',
+                    data: item,
+                    barWidth: data.barWidth || 12,
+                    label: {
+                        normal: {
+                            show: true,
+                            formatter: '{c}' + symbol,
+                            position: 'top',
+                            textStyle: {
+                                color: '#fff',
+                                fontStyle: 'normal',
+                                fontFamily: '微软雅黑',
+                                textAlign: 'left',
+                                fontSize: 11,
+                            },
+                        },
+                    },
+                    itemStyle: { //图形样式
+                        normal: {
+                            barBorderRadius: 4,
+                            color: data.barColor[index]
+                        },
+                    }
+                });
+            });
+
+            lines && lines.forEach((item, index) => {
+                legendArr.push({
+                    name: legendLine && legendLine.length > 0 && legendLine[index]
+                })
+                seriesArr.push({
+                    name: legendLine && legendLine.length > 0 && legendLine[index],
+                    type: 'line',
+                    data: item,
+                    itemStyle: {
+                        normal: {
+                            color: data.lineColor[index],
+                            lineStyle: {
+                                width: 3,
+                                type: 'solid',
+                            }
+                        }
+                    },
+                    label: {
+                        normal: {
+                            show: false, //折线上方label控制显示隐藏
+                            position: 'top',
+                        }
+                    },
+                    symbol: 'circle',
+                    symbolSize: 10
+                });
+            });
+
+            return {
+                seriesArr,
+                legendArr
+            };
+        })();
+
+
+        option = {
+            title: {
+                show: true,
+                top: '10%',
+                left: '3%',
+                text: data.title,
+                textStyle: {
+                    fontSize: 18,
+                    color: '#fff'
+                },
+                subtext: data.subTitle,
+                link: ''
+            },
+            toolbox: {
+                show: true,
+                feature: {
+            mark: {show: true},
+            dataView: {show: true, readOnly: false},
+            restore: {show: true},
+            saveAsImage: {show: true}
+                     }
+            },
+            tooltip: {
+                trigger: 'axis',
+                formatter: function (params) {
+                    var time = '';
+                    var str = '';
+                    for (var i of params) {
+                        time = i.name.replace(/\n/g, '') + '<br/>';
+                        if (i.data == 'null' || i.data == null) {
+                            str += i.seriesName + '：无数据' + '<br/>'
+                        } else {
+                            str += i.seriesName + '：' + i.data + symbol + '%<br/>'
+                        }
+
+                    }
+                    return time + str;
+                },
+                axisPointer: {
+                    type: 'none'
+                },
+            },
+            legend: {
+                right: data.legendRight || '30%',
+                top: '12%',
+                right: '5%',
+                itemGap: 16,
+                itemWidth: 10,
+                itemHeight: 10,
+                data: myData.legendArr,
+                textStyle: {
+                    color: '#fff',
+                    fontStyle: 'normal',
+                    fontFamily: '微软雅黑',
+                    fontSize: 12,
+                }
+            },
+            grid: {
+                x: 30,
+                y: 80,
+                x2: 30,
+                y2: 60,
+            },
+            xAxis: {
+                type: 'category',
+                data: data.xAxis,
+                axisTick: {
+                    show: false,
+                },
+
+                axisLine: {
+                    show: true,
+                    lineStyle: {
+                        color: '#1AA1FD',
+                    },
+                    symbol: ['none', 'arrow']
+                },
+                axisLabel: {
+                    show: true,
+                    interval: '0',
+                    textStyle: {
+                        lineHeight: 16,
+                        padding: [2, 2, 0, 2],
+                        height: 50,
+                        fontSize: 12,
+                    },
+                    rich: {
+                        Sunny: {
+                            height: 50,
+                            // width: 60,
+                            padding: [0, 5, 0, 5],
+                            align: 'center',
+                        },
+                    },
+                    formatter: function (params, index) {
+                        var newParamsName = "";
+                        var splitNumber = 5;
+                        var paramsNameNumber = params && params.length;
+                        if (paramsNameNumber && paramsNameNumber <= 4) {
+                            splitNumber = 4;
+                        } else if (paramsNameNumber >= 5 && paramsNameNumber <= 7) {
+                            splitNumber = 4;
+                        } else if (paramsNameNumber >= 8 && paramsNameNumber <= 9) {
+                            splitNumber = 5;
+                        } else if (paramsNameNumber >= 10 && paramsNameNumber <= 14) {
+                            splitNumber = 5;
+                        } else {
+                            params = params && params.slice(0, 15);
+                        }
+
+                        var provideNumber = splitNumber; //一行显示几个字
+                        var rowNumber = Math.ceil(paramsNameNumber / provideNumber) || 0;
+                        if (paramsNameNumber > provideNumber) {
+                            for (var p = 0; p < rowNumber; p++) {
+                                var tempStr = "";
+                                var start = p * provideNumber;
+                                var end = start + provideNumber;
+                                if (p == rowNumber - 1) {
+                                    tempStr = params.substring(start, paramsNameNumber);
+                                } else {
+                                    tempStr = params.substring(start, end) + "\n";
+                                }
+                                newParamsName += tempStr;
+                            }
+
+                        } else {
+                            newParamsName = params;
+                        }
+                        params = newParamsName;
+                        return '{Sunny|' + params + '}';
+                    },
+                    color: '#1AA1FD',
+                },
+
+            },
+            yAxis: {
+                axisLine: {
+                    show: true,
+                    lineStyle: {
+                        color: '#1AA1FD',
+                    },
+                    symbol: ['none', 'arrow']
+                },
+                type: 'value',
+                axisTick: {
+                    show: false
+                },
+                axisLabel: {
+                    show: false
+                },
+                splitLine: {
+                    show: false,
+                    lineStyle: {
+                        color: '#1AA1FD',
+                        type: 'solid'
+                    },
+                }
+            },
+            series: myData.seriesArr
+        }
+        // 使用刚指定的配置项和数据显示图表。
+        myChart.setOption(option);
+        window.addEventListener("resize", function () {
+            myChart.resize();
+        });
+    }
+
+    function echart_3() {
+        // 基于准备好的dom，初始化echarts实例
+        var myChart = echarts.init(document.getElementById('chart_3'));
+
+        var option;
+
+        option = {
+    // title: {
+    //     text: '多雷达图'
+    // },
+    toolbox: {
+                    show: true,
+                 feature: {
+                dataView: {show: true, readOnly: false},
+                // magicType: {show: true, type: ['line', 'bar']},
+                restore: {show: true},
+                saveAsImage: {show: true}
+                 }
+            },
+    tooltip: {
+        trigger: 'axis'
+    },
+    legend: {
+        top: 'bottom',
+        left: 'left',
+        data: ['sum', 'positive', 'negative'],
+        textStyle: {
+                    color: "#fff",
+                    fontSize: 12
+                },
+    },
+    radar: [
+        {
+            indicator: [
+                {text: 'sum', max: server.numSum},
+                {text: 'positive', max: server.positiveSum},
+                {text: 'negative', max: server.negativeSum},
+            ],
+            center: ['25%', '40%'],
+            radius: 80
+        },
+        {
+            indicator: (function (){
+                var res = [];
+                for (var i = 1; i <= 12; i++) {
+                    res.push({text: 'category' +i , max: 20});
+                }
+                return res;
+            })(),
+            center: ['75%', '40%'],
+            radius: 80
+        }
+    ],
+    series: [
+        {
+            type: 'radar',
+            tooltip: {
+                trigger: 'item'
+            },
+            areaStyle: {},
+            data: [
+                {
+                    value: server.num,
+                    name: 'sum'
+                }
+            ]
+        },
+        {
+            type: 'radar',
+            radarIndex: 1,
+            areaStyle: {},
+            data: [
+                {
+                    name: 'positive',
+                    value: server.positive,
+                },
+                {
+                    name: 'negative',
+                    value: server.negative,
+                }
+            ]
+        }
+    ]
+        };
+        // 使用刚指定的配置项和数据显示图表。
+        myChart.setOption(option);
+        window.addEventListener("resize", function () {
+            myChart.resize();
+        });
+    }
+
+    function echart_4() {
+        // 基于准备好的dom，初始化echarts实例
+        var myChart = echarts.init(document.getElementById('chart_4'));
+        var data = server.negative;
+        var titlename =
+            ['情感', '美食', '舞蹈','动漫', '音乐', '游戏', '经济', '科创', '教育','运动', '汽车', '影视'];
+        var valdata = server.num;
+        var myColor = ['#cd8586', '#557b03', '#008af5','#0a82c7', '#0063ff', '#e1e9ea','#e72325', '#98e002', '#2ca3fd','#b4dbf3', '#cafa68', '#628db1'];
+        option = {
+            title: {
+                text: '消极情感占比',
+                x: 'center',
+                textStyle: {
+                    color: '#FFF'
+                },
+                left: '6%',
+                top: '10%'
+            },
+            //图标位置
+            grid: {
+                top: '20%',
+                left: '25%'
+            },
+        toolbox: {
+            show: true,
+            feature: {
+            dataView: {show: true, readOnly: false},
+            magicType: {show: true, type: ['line', 'bar']},
+            restore: {show: true},
+            saveAsImage: {show: true}
+                }
+             },
+            xAxis: {
+                show: false
+            },
+            yAxis: [{
+                show: true,
+                data: titlename,
+                inverse: true,
+                axisLine: {
+                    show: false
+                },
+                splitLine: {
+                    show: false
+                },
+                axisTick: {
+                    show: false
+                },
+                axisLabel: {
+                    color: '#fff',
+                    formatter: (value, index) => {
+                        return [
+                            '{title|' + value + '} '
+                        ].join('\n')
+                    },
+                    rich: {
+                        lg: {
+                            backgroundColor: '#e7bf31',
+                            color: '#fff',
+                            borderRadius: 15,
+                            // padding: 5,
+                            align: 'center',
+                            width: 15,
+                            height: 15
+                        },
+                    }
+                },
+
+
+            }, {
+                show: true,
+                inverse: true,
+                data: valdata,
+                axisLabel: {
+                    textStyle: {
+                        fontSize: 12,
+                        color: '#fff',
+                    },
+                },
+                axisLine: {
+                    show: false
+                },
+                splitLine: {
+                    show: false
+                },
+                axisTick: {
+                    show: false
+                },
+
+            }],
+            series: [{
+                name: '条',
+                type: 'bar',
+                yAxisIndex: 0,
+                data: data,
+                barWidth: 10,
+                itemStyle: {
+                    normal: {
+                        {#barBorderRadius: 20,#}
+                        color: function(params) {
+                            var num = myColor.length;
+                            return myColor[params.dataIndex % num]
+                        },
+                    }
+                },
+                label: {
+                    normal: {
+                        show: true,
+                        position: 'right',
+                        formatter: '{c}%'
+                    }
+                },
+            },
+            ]
+        };
+        // 使用刚指定的配置项和数据显示图表。
+        myChart.setOption(option);
+        window.addEventListener("resize", function () {
+            myChart.resize();
+        });
+    }
+});
+</script>
+<script type="text/javascript">
+    var strs = server.emotion_datas;
+            //一下数据为模拟集合，个人理解js中的集合就是将对象放进数组
+    //假设规定每页显示长度为3
+var len = 5;
+//确认该集合会被分成几页，分成几页就代表需要几个页面按钮,封装封装方便多次运用
+function limits(){
+	var countLim = Math.ceil(strs.length/len);//余数也算是一页，这里用向上取整
+	//确认页面按钮个数，进行循环显示到页面上
+	document.getElementById("inputs").innerHTML='';//清空一下
+	for(var i=1;i<=countLim;i++){
+		document.getElementById("inputs").innerHTML+='<input type="button" value="'+i+'" onclick="limitinput(this)"/>';//每个页面按钮都绑定上一个点击事件
+	}
+}
+var choose = 0;//创建一个全局变量用来保存当前处于第几个页面
+//点击按钮获取当前按钮的值进行选择当前table是第几页数据
+function limitinput(ids){
+	choose = ids.value;
+	tablestr(choose);//刷新table数据
+	limits();//刷新页面按钮
+    ids.style.backgroundColor='pink';//当前点击的页面按钮背景颜色改变为红色
+	liminputcolor(choose);//页面按钮变色
+}
+//通过当前页面按钮和页面数据长度将数据放进table内，封装封装！！！必须封装
+function tablestr(num){//num是指当前哪个页面
+	var num1 = (num-1)*len;//确定循环开始的集合下标
+	var num2 = num*len;//确定循环结束的结束下标
+	document.getElementById("table").innerHTML='';//清空一下
+	for(var i=num1;i<num2;i++){//遍历数组
+		var str = '';
+		for(var h in strs[i]){//遍历集合
+			str+='<td>'+strs[i][h]+'</td>';
+		}
+		document.getElementById("table").innerHTML+='<tr>'+str+'</tr>';//每循环一次添加一条数据
+	}
+}
+function liminputcolor(choose){
+	document.getElementById("inputs").childNodes[choose-1].style.backgroundColor="pink";
+}
+//初始化，当前页面显示为第一页
+limits();//页面按钮生成
+document.getElementById("inputs").childNodes[0].style.backgroundColor="pink";//第一个按钮的背景颜色为红色
+tablestr(1);//table数据显示
+</script>

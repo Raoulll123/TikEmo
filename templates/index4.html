@@ -1,0 +1,179 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>LDA分类结果展示</title>
+<link href="{{ url_for('static', filename='css/style4.css')}}"  rel="stylesheet" type="text/css" media="all" />
+<script src="{{ url_for('static', filename='js/echarts.min.js')}}" charset="utf-8"></script>
+<style>
+    /*使图片在浏览器中居中显示*/
+.bigImg {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+ /*图片向左移动自身宽度的50%, 向上移动自身高度的50%。*/
+    transform: translate(-50%,-50%);
+}
+/*遮罩层*/
+  .opacityBottom {
+        width: 100%;
+        height: 100%;
+        position: fixed;
+        background: rgba(0,0,0,0.8);
+        z-index: 1000;
+        top: 0;
+        left: 0;
+    }
+</style>
+
+<body>
+<div class="bnt">
+  <div class="topbnt_left fl">
+   <ul><li ><a href="#">LDA</a></li>
+      <li><a href="#"></a>热榜</li>
+      <li><a href="#"></a>热词</li>
+      <li><a href="#">话题</a></li>
+   </ul>
+  </div>
+  <h1 class="tith1 fl">LDA分类结果展示</h1>
+  <div class=" fr topbnt_right">
+    <ul>
+       <li><a href="index0">return</a></li>
+        <li><a href="#">top10</a></li>
+       <li><a href="#">聚类</a></li>
+       <li><a href="#">分类结果</a></li>
+    </ul>
+   </ul>
+  </div>
+</div>
+<!-- bnt end -->
+<div class="puleft fl">
+    <div class="pulefttop"><h2 class="tith2"><span>LDA分类结果[1-2]</span></h2>
+    <div class="box pbox" style="margin-top: 3%">
+      <div class="lefttoday_bar pulefttoday_bar fl">
+{#        <ul>#}
+{#              <li class="hot1">1-2</li>#}
+{#            </ul>#}
+          <div class="fl puleftboxtmidd1"><img src="{{ url_for('static', filename='LDA/TikTok_theme_category1.png')}}" style="width: 210%;height: 100%"></div>
+      </div>
+      <div class="pvr fr pulefttoday_bar2" >
+          <div class="puleftbox2bott_cont"><img src="{{ url_for('static', filename='LDA/TikTok_theme_category2.png')}}" style="width: 100%;height: 100%"></div>
+      </div>
+    </div>
+    <!-- lefttoday_number end -->
+    </div>
+    <div class="puleftboxtmidd">
+      <h2 class="tith2">LDA分类结果展示[3-4]</h2>
+    <div class="box pbox" style="margin-top: 3%">
+       <div class="fl puleftboxtmidd1"><img src="{{ url_for('static', filename='LDA/TikTok_theme_category3.png')}}" style="width: 100%;height: 100%;"></div>
+          <div class="pvr fr pulefttoday_bar2" >
+              <div class="puleftbox2bott_cont"><img src="{{ url_for('static', filename='LDA/TikTok_theme_category4.png')}}" style="width: 100%;height: 100%;"></div>
+      </div>
+    </div>
+  </div>
+  <div class="puleftboxtbott">
+    <h2 class="tith2 pt1">LDA分类结果展示[5-6]</h2>
+    <div class="box pbox" style="margin-top: 3%">
+       <div class="fl puleftboxtmidd1"><img src="{{ url_for('static', filename='LDA/TikTok_theme_category5.png')}}" style="width: 100%;height: 100%;"></div>
+          <div class="pvr fr pulefttoday_bar2" style="height: 110%">
+{#            <div id="puleftboxtmidd2" class="puleftbox2bott_cont"></div>#}
+              <div class="puleftbox2bott_cont"><img src="{{ url_for('static', filename='LDA/TikTok_theme_category6.png')}}" style="width: 100%;height: 100%"></div>
+      </div>
+    </div>
+</div>
+</div>
+<!--  left1 end -->
+<div class="fl pt6 puleft2">
+        <div class="pmidd_bott">
+          <div class="pumiddboxttop1 fl">
+              <h2 class="tith2 pt3">今日分类话题热榜</h2>
+              <div class="puleft2height">
+                    <div class="widget-inline-box text-center ">
+                      <p>今日热榜总数</p>
+                      <h3 class=" ceeb1fd f30">100</h3>
+{#                      <h4 class="text-muted ">环比<img src="{{ url_for('static', filename='img/iconup.png')}}" height="16" />2%</h4>#}
+                    </div>
+                    <div class="widget-inline-box text-center ">
+                       <p>今日分类总数</p>
+                      <h3 class=" c24c9ff f30">12</h3>
+{#                      <h4 class="text-muted ">环比<img src="{{ url_for('static', filename='img/icondown.png')}}" height="16" />3%</h4>#}
+                    </div>
+                    <div class="widget-inline-box text-center ">
+                       <p>今日话题总数</p>
+                      <h3 class=" cffff00 f30">120</h3>
+{#                      <h4 class="text-muted ">环比<img src="{{ url_for('static', filename='img/icondown.png')}}" height="16" />3%</h4>#}
+                    </div>
+                    <div class="widget-inline-box text-center ">
+                      <p>今日热词总数</p>
+                      <h3 class=" ceeb1fd f30">1200</h3>
+{#                      <h4 class="text-muted ">环比<img src="{{ url_for('static', filename='img/iconup.png')}}" height="16" />2%</h4>#}
+                    </div>
+                  </div>
+            </div>
+            <div class="pumiddboxttop2 fl">
+                <h2 class="tith2 pt3">LDA分类结果展示[12]</h2>
+                <div class="left2_table pumiddboxttop2_cont">
+                   <ul>
+                       <div  style="height: 48%">
+                            <img src="{{ url_for('static', filename='g6.gif')}}" style="margin-left: -21%;height: 98%"/>
+                        </div>
+                        <li class="text_l" style="height: 200%;padding-top: 1%">
+                            <p style="margin-left: -1%">
+                            <img src="{{ url_for('static', filename='LDA/TikTok_theme_category12.png')}}" style="width: 105%;height: 100%;">
+                        </p>
+                        </li>
+                   </ul>
+                </div>
+              </div>
+            </div>
+            <!--  amidd_bott end-->
+            <div class="pmiddboxtbott" >
+              <h2 class="tith2 pt1">LDA分类结果展示[7-8]</h2>
+              <div class="box pbox" style="margin-top: 3%">
+       <div class="fl puleftboxtmidd1"><img src="{{ url_for('static', filename='LDA/TikTok_theme_category7.png')}}" style="width: 100%;height: 100%;"></div>
+          <div class="pvr fr pulefttoday_bar2" style="height: 110%">
+              <div class="puleftbox2bott_cont"><img src="{{ url_for('static', filename='LDA/TikTok_theme_category8.png')}}" style="width: 100%;height: 100%"></div>
+      </div>
+              </div>
+            </div>
+            <!-- amidd_bott end -->
+        </div>
+        <!-- mrbox_top end -->
+        <div class="mr_right fl">
+          <div class="purightboxtop"><h2 class="tith2 pt12">LDA分类结果展示[9]</h2>
+              <div class="purightboxtopcont"><img src="{{ url_for('static', filename='LDA/TikTok_theme_category9.png')}}" style="width: 100%;height: 110%"></div>
+          </div>
+          <div class="purightboxmidd"><h2 class="tith2 pt12">LDA分类结果展示[10]</h2>
+              <div class="purightboxtopcont"><img src="{{ url_for('static', filename='LDA/TikTok_theme_category10.png')}}" style="width: 100%;height: 110%"></div>
+          </div>
+            <div class="purightboxbott"><h2 class="tith2 pt12">LDA分类结果展示[11]</h2>
+                <div class="purightboxtopcont"><img src="{{ url_for('static', filename='LDA/TikTok_theme_category11.png')}}" style="width: 100%;height: 110%"></div>
+            </div>
+        </div>
+        <!-- mrbox_top_right end -->
+      </div>
+
+
+</div>
+<script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.js"></script>
+<script type="text/javascript">
+$('img').click(function () {
+    //获取图片路径
+    var imgsrc = $(this).attr("src");
+    console.log(imgsrc);
+    var opacityBottom = '<div class="opacityBottom" style = "display:none"><img class="bigImg" src="' + imgsrc + '" style="width: 80%;height: 90%"></div>';
+    $(document.body).append(opacityBottom);
+    toBigImg();//变大函数
+
+});
+
+function toBigImg() {
+    $(".opacityBottom").addClass("opacityBottom");//添加遮罩层
+    $(".opacityBottom").show();
+    $("html,body").addClass("none-scroll");//下层不可滑动
+    $(".bigImg").addClass("bigImg");//添加图片样式
+    $(".opacityBottom").click(function () {//点击关闭
+        $("html,body").removeClass("none-scroll");
+        $(".opacityBottom").remove();
+    })}
+</script>
+</body>
+</html>

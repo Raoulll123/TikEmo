@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <link href="{{ url_for('static', filename='css/Datacages_Homeindex.css')}}" rel="stylesheet" type="text/css"/>
+    <link href="{{ url_for('static', filename='css/ProgressBarWars.css')}}" rel="stylesheet" />
+    <script src="{{ url_for('static', filename='js/jquery.js')}}"></script>
+    <style type="text/css">
+        *{padding: 0;margin: 0}
+        .loadEffect{  width: 100px;  height: 100px;  position: relative;  margin: 0 auto; top: 26%}
+        .loadEffect span{animation: load 1.04s ease infinite;  display: inline-block;  width: 30px;  height: 10px;  border-top-left-radius: 5px;  border-bottom-left-radius: 5px;  background: lightgreen;  position: absolute;   }
+        .loadEffect span:nth-child(1){  left: 0;  top: 50%;  margin-top:-5px;  animation-delay:0.13s;  }
+        .loadEffect span:nth-child(2){  left: 10px;  top: 20px;  transform: rotate(45deg);  animation-delay:0.26s;  }
+        .loadEffect span:nth-child(3){  left: 50%;  top: 10px;  margin-left: -15px;  transform: rotate(90deg);  animation-delay:0.39s;  }
+        .loadEffect span:nth-child(4){  top: 20px;  right:10px;  transform: rotate(135deg);  animation-delay:0.52s;  }
+        .loadEffect span:nth-child(5){  right: 0;  top: 50%;  margin-top:-5px;  transform: rotate(180deg);  animation-delay:0.65s;  }
+        .loadEffect span:nth-child(6){  right: 10px;  bottom:20px;  transform: rotate(225deg);  animation-delay:0.78s;  }
+        .loadEffect span:nth-child(7){  bottom: 10px;  left: 50%;  margin-left: -15px;  transform: rotate(270deg);  animation-delay:0.91s;  }
+        .loadEffect span:nth-child(8){  bottom: 20px;  left: 10px;  transform: rotate(315deg);  animation-delay:1.04s;  }
+        @keyframes load{
+            0%{
+                opacity: 1;
+            }
+            100%{
+                opacity: 0.2;
+            }
+        }
+        html,body{width: 100%;height: 100%}
+        #loading{background-color: #181e20;opacity: 0.5;width: 100%;height: 100%;position: fixed;z-index: 999}
+    </style>
+    <script src="{{ url_for('static', filename='js/jquery.js')}}"></script>
+    <script src="{{ url_for('static', filename='js/echarts-all.js')}}"></script>
+    <script src="{{ url_for('static', filename='js/ProgressBarWars.js')}}"></script>
+    <style>
+        *{padding: 0;margin: 0}
+        .progress{
+            margin-top: 30px;
+        }
+        .down_span{color: #dfdede;font-size: 12px;font-weight: lighter}
+        h3,ul,li{margin:0;padding:0; list-style:none;}
+        .scrollbox{ width: 268px; margin: 0 auto;  }
+        #scrollDiv{width:268px;height:280px; overflow:hidden;}/*这里的高度和超出隐藏是必须的*/
+        #scrollDiv ul li{height:66px; width:259px; ;background-color: #07325e; overflow:hidden; margin-bottom: 4px;color: #dfdede;font-size: 14px;padding: 0 9px 0 9px;line-height: 30px;position: relative}
+        #scrollDiv ul li span{position: absolute;bottom:5px;right: 16px;display: block;width: 68px;height: 18px;text-align: center;color: #081e49;background-color: #69c200;line-height: 18px}
+.sent-div{
+    width: 98%;
+    height: 98%;
+    margin: 0 auto;
+
+}/*使图片在浏览器中居中显示*/
+.bigImg {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+ /*图片向左移动自身宽度的50%, 向上移动自身高度的50%。*/
+    transform: translate(-50%,-50%);
+}
+/*遮罩层*/
+  .opacityBottom {
+        width: 100%;
+        height: 100%;
+        position: fixed;
+        background: rgba(0,0,0,0.8);
+        z-index: 1000;
+        top: 0;
+        left: 0;
+    }
+
+    </style>
+
+
+    <title>TikTok Top100 Hot Video Comprehensive Analysis Platform</title>
+</head>
+<body>
+<div id="loading">
+    <div class="loadEffect">
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+    </div>
+</div>
+<!--标题栏-->
+<div class="Hometitlebox">
+    <a style=" color: #00e4ff;font-size: 16.5px" href="index0">TikEmo——TikTok Hot Video Analysis Platform</a>
+</div>
+
+<!--动效显示-->
+<div class="flasheffectoutbox">
+
+    <div style="width: 1000px; height: 500px; position: relative">
+        <div class="line2 line"></div>
+        <div class="line3 line"></div>
+        <div class="line4 line"></div>
+        <div class="line5 line"></div>
+        <div class="line6 line"></div>
+
+        <!--主动效-->
+        <div class="maineffectoutbox circleeffectclass">
+            <a href="/index0">
+            <img class="effectposition maindataeffect" src="{{ url_for('static', filename='img/maindataeffect.png')}}">
+            <div class="effectposition acrossremindeffectout" style=" width: 76px; height: 76px; margin: 9px;">
+                <div class="acrossremindeffectin" style="width: 68px; height: 68px; margin: 4px;"></div>
+            </div>
+            <img class="effectposition maindataspecialeffect" src="{{ url_for('static', filename='img/maindataspecialeffect.png')}}">
+            <img class="effectposition acrossremindeffecindex" src="{{ url_for('static', filename='img/maindataicon.png')}}">
+            <span class="stagetitle">TikEmo Platform</span>
+            </a>
+        </div>
+        <!--卫星动效-->
+        <div class="circleeffectclass aroundfunctioneffect" style="left: 254px;top: 135px;" >
+            <a href="/index2">
+                <img class="effectposition arounddataeffect02" src="{{ url_for('static', filename='img/aroundeffect.png')}}">
+            <div class="effectposition acrossremindeffectout acrossremindeffectoutard">
+                <div class="acrossremindeffectin acrossremindeffectinard"></div>
+            </div>
+            <img class="effectposition acrossremindeffecindex" src="{{ url_for('static', filename='img/xingzhengshenpi.png')}}">
+            <span class="stagetitle stagearoundtitle">cluster聚类结果</span>
+            </a>
+        </div>
+
+
+        <div class="circleeffectclass aroundfunctioneffect" style="left: 190px;bottom: 89px;">
+            <a href="/param2">
+            <img class="effectposition arounddataeffect01" src="{{ url_for('static', filename='img/aroundeffect.png')}}">
+            <div class="effectposition acrossremindeffectout acrossremindeffectoutard">
+                <div class="acrossremindeffectin acrossremindeffectinard"></div>
+            </div>
+            <img class="effectposition acrossremindeffecindex" src="{{ url_for('static', filename='img/baixingpaiAPP.png')}}">
+            <span class="stagetitle stagearoundtitle">cluster分析结果</span>
+            </a>
+        </div>
+
+        <div class="circleeffectclass aroundfunctioneffect" style="right: 405px;bottom: 53px;">
+            <a href="/index4">
+            <img class="effectposition arounddataeffect02" src="{{ url_for('static', filename='img/aroundeffect.png')}}">
+            <div class="effectposition acrossremindeffectout acrossremindeffectoutard">
+                <div class="acrossremindeffectin acrossremindeffectinard"></div>
+            </div>
+            <img class="effectposition acrossremindeffecindex" src="{{ url_for('static', filename='img/baixingpaiAPP.png')}}">
+            <span class="stagetitle stagearoundtitle">LDA分析图片</span>
+            </a>
+        </div>
+
+        <div class="circleeffectclass aroundfunctioneffect" style="right: 243px;bottom: 165px;">
+            <a href="/index3">
+            <img class="effectposition arounddataeffect01" src="{{ url_for('static', filename='img/aroundeffect.png')}}">
+            <div class="effectposition acrossremindeffectout acrossremindeffectoutard">
+                <div class="acrossremindeffectin acrossremindeffectinard"></div>
+            </div>
+            <img class="effectposition acrossremindeffecindex" src="{{ url_for('static', filename='img/12319rexian.png')}}">
+            <span class="stagetitle stagearoundtitle">LDA总结果</span>
+            </a>
+        </div>
+
+        <div class="circleeffectclass aroundfunctioneffect" style="right: 294px;top: 79px;">
+            <a href="/index5">
+            <img class="effectposition arounddataeffect03" src="{{ url_for('static', filename='img/aroundeffect.png')}}">
+            <div class="effectposition acrossremindeffectout acrossremindeffectoutard">
+                <div class="acrossremindeffectin acrossremindeffectinard"></div>
+            </div>
+            <img class="effectposition acrossremindeffecindex" src="{{ url_for('static', filename='img/zonghezhifa.png')}}">
+            <span class="stagetitle stagearoundtitle">emo情感分析</span>
+            </a>
+        </div>
+
+
+        <div class="circleeffectclass decarround01" style="top: 218px;left: 92px;">
+{#            <div class="acrossremindeffectin decarroundin01" style=" "></div>#}
+            <a href="/index1">
+            <img class="effectposition arounddataeffect02" src="{{ url_for('static', filename='img/aroundeffect.png')}}" style="margin-left: -20px;margin-top: -22px">
+            <div class="effectposition acrossremindeffectout acrossremindeffectoutard" style="margin-left: -12px;margin-top: -15px">
+                <div class="acrossremindeffectin acrossremindeffectinard"></div>
+            </div>
+            <img class="effectposition acrossremindeffecindex" src="{{ url_for('static', filename='img/zonghezhifa.png')}}" style="margin-left: -20px;margin-top: -20px">
+            <span class="stagetitle stagearoundtitle" style="margin-left: -30px;margin-top: -30px">视频详细信息</span>
+            </a>
+        </div>
+
+        <div class="circleeffectclass decarround01" style="top: 197px;right: 163px;">
+            <a href="/index6">
+            <img class="effectposition arounddataeffect02" src="{{ url_for('static', filename='img/aroundeffect.png')}}" style="margin-left: -18px;margin-top: -18px">
+            <div class="acrossremindeffectin decarroundin01" style=" "></div>
+           <div class="effectposition acrossremindeffectout acrossremindeffectoutard" style="margin-left: -10px;margin-top: -47px">
+                <div class="acrossremindeffectin acrossremindeffectinard"></div>
+            </div>
+            <img class="effectposition acrossremindeffecindex" src="{{ url_for('static', filename='img/xingzhengshenpi.png')}}" style="margin-left: -19px;margin-top: -55px">
+            <span class="stagetitle stagearoundtitle" style="margin-left: -20px;margin-top: -30px">emo分类数据</span>
+            </a>
+        </div>
+
+        <div class="circleeffectclass decarround02" style="top: 99px;right: 93px;">
+            <a href="/index6">
+            <img class="effectposition arounddataeffect02" src="{{ url_for('static', filename='img/aroundeffect.png')}}" style="margin-left: -18px;margin-top: -18px">
+            <div class="acrossremindeffectin decarroundin01" style=" "></div>
+           <div class="effectposition acrossremindeffectout acrossremindeffectoutard" style="margin-left: -10px;margin-top: -47px">
+                <div class="acrossremindeffectin acrossremindeffectinard"></div>
+            </div>
+            <img class="effectposition acrossremindeffecindex" src="{{ url_for('static', filename='img/baixingpaiAPP.png')}}" style="margin-left: -19px;margin-top: -55px">
+            <span class="stagetitle stagearoundtitle" style="margin-left: -20px;margin-top: -30px">EXIT</span>
+            </a>
+        </div>
+
+
+    </div>
+</div>
+
+
+<!--弹出功能-->
+<div class="popuofunxtionbox">
+    <!--标题-->
+    <div class="popupboxtitlebox">
+{#        <span class="popupboxtitlemsg">xxxx审批系统数据分析</span>#}
+        <div class="popupboxclose"></div>
+    </div>
+</div>
+
+
+<!--版权-->
+<div class="copyrigntoutbox">
+{#    <span class="copyrigntmsg">版权所有 © xxxxxxxxxxx xxx。 保留一切权利。xxxxxICP号</span>#}
+</div>
+
+</body>
+<script>
+    window.onload = function(){
+        var loading = document.getElementById("loading");
+        loading.style.display="none";
+    }
+</script>
+<script>
+
+    var salesMyChart = echarts.init($("#container1")[0]);
+    option = {
+
+
+
+
+        tooltip : {
+            trigger: 'item',
+            formatter: "{a} <br/>{b} : {c} ({d}%)"
+        },
+
+        visualMap: {
+            show: false,
+            min: 80,
+            max: 600,
+            inRange: {
+                colorLightness: [0, 1]
+            }
+        },
+        series : [
+            {
+                name:'数据传输量',
+                type:'pie',
+                radius : '55%',
+                center: ['50%', '50%'],
+                data:[
+                    {value:335, name:'系统一'},
+                    {value:310, name:'系统二'},
+                    {value:274, name:'系统三'},
+                    {value:235, name:'系统四'},
+                    {value:400, name:'系统五'}
+                ].sort(function (a, b) { return a.value - b.value; }),
+                roseType: 'radius',
+                label: {
+                    normal: {
+                        textStyle: {
+                            color: 'rgba(255, 255, 255, 0.5)'
+                        }
+                    }
+                },
+                labelLine: {
+                    normal: {
+                        lineStyle: {
+                            color: 'rgba(255, 255, 255, 0.3)'
+                        },
+                        smooth: 0.2,
+                        length: 10,
+                        length2: 20
+                    }
+                },
+                itemStyle: {
+                    normal: {
+                        color: '#c23531',
+                        shadowBlur: 200,
+                        shadowColor: 'rgba(0, 0, 0, 0.5)'
+                    }
+                },
+
+                animationType: 'scale',
+                animationEasing: 'elasticOut',
+                animationDelay: function (idx) {
+                    return Math.random() * 200;
+                }
+            }
+        ]
+    };
+    salesMyChart.setOption(option);
+
+</script>
+<script>
+    $('img').click(function () {
+    //获取图片路径
+    var imgsrc = $(this).attr("src");
+    console.log(imgsrc);
+    var opacityBottom = '<div class="opacityBottom" style = "display:none"><img class="bigImg" src="' + imgsrc + '"></div>';
+    $(document.body).append(opacityBottom);
+    toBigImg();//变大函数
+
+});
+
+function toBigImg() {
+    $(".opacityBottom").addClass("opacityBottom");//添加遮罩层
+    $(".opacityBottom").show();
+    $("html,body").addClass("none-scroll");//下层不可滑动
+    $(".bigImg").addClass("bigImg");//添加图片样式
+    $(".opacityBottom").click(function () {//点击关闭
+        $("html,body").removeClass("none-scroll");
+        $(".opacityBottom").remove();
+    });}
+</script>
+</html>

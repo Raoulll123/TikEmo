@@ -1,0 +1,21 @@
+@charset "utf-8";
+
+body{background-image: url(../images/nybj.png);background-size:100% 100%;font-weight:bold;font-family:苹方;overflow: hidden;}
+.main{width:1024px;height:768px;position:relative;margin:auto;}
+div{border:0px solid white;margin:1px;}
+.layer{position:relative;width:100%;}
+#layer01{}
+#layer01 img{text-align: center;display: block;height: 35px;padding-top: 35px;margin: auto;}
+#layer02 > div{height:100%;float:left;position:relative;}
+.layer02-data{position: absolute;width: auto;height: 100px;color: white;top: 45px;left: 65px;}
+.layer03-panel{height:100%;position:relative;float:left;}
+.layer03-left-label{position:absolute;}
+#layer03_left_label01{top:10px;left:10px;color:white;height:20px;width:200px;font-weight: bold;}
+#layer03_left_label02{right:10px;top:10px;color:#036769;height:20px;width:200px;}
+.layer03-left-chart{position:relative;float:left;height:100%;}
+#layer03_right_label{position:absolute;top:10px;left:10px;color:white;height:20px;width:100px;}
+.layer03-right-chart{position:relative;float:left;height:100%;width:32%;}
+.layer03-right-chart-label{color: white;text-align: center;position: absolute;bottom: 60px;width: 100%;}
+.layer04-panel{position:relative;float:left;height:100%;width:48%;}
+.layer04-panel-label{width:100%;height:15%;color:white;padding-top:5px;}
+.layer04-panel-chart{width:100%;height:85%;}

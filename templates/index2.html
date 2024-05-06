@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>聚类分析结果展示</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/index2.css')}}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/globle.css')}}">
+</head>
+<body>
+  <div class="main">
+    <div class="top_title">
+        <span><img src="{{ url_for('static', filename='imgs/title-left.png')}}" style="width: 40vw;height: 80px;float: left;right: 12vw">
+        <h1 style="color: #ffffff;;font-family: 黑体;float: left;margin-top: 1.2vw">聚类分析结果展示</h1>
+            <span style=" color: #ffffff;;font-size:24px; position: absolute; right: 60px;margin-top: 1.5%"><a href="index0">return</a></span>
+            <img src="{{ url_for('static', filename='imgs/title-right.png')}}" style="width: 40vw;height: 80px;left: 14vw">
+        </span>
+{#      <img src="{{ url_for('static', filename='images/top_title.png')}}"/>#}
+    </div>
+    <div class="datas">
+      <div class="data_left">
+        <div class="left_top">
+          <div class="left_top_title">基础数据
+          </div>
+          <div class="left_top_main">
+            <div class="left_main_circle" style="margin-top: 10%">
+              <p class="counter-value circle_num1">{{ sum|safe }}</p>
+              <span class="span_font">视频总数<br/>(条)</span>
+            </div>
+            <div class="left_main_circle" style="margin-top: 10%">
+                <p class="counter-value circle_num2">{{number|safe }}</p>
+                <span class="span_font">分类总数<br/>(类)</span>
+            </div>
+{#            <div class="left_main_circle">#}
+{#                <p class="counter-value circle_num3">2545.55</p>#}
+{#                <span class="span_font">挂网总面积<br/>(万亩)</span>#}
+{#            </div>#}
+          </div>
+        </div>
+        <div class="left_bottom">
+          <div class="left_top_title">分类类型
+          </div>
+          <div id="Business_type" class="left_top_main left_bottom_main" style="width: 110%;margin-top: 5%;margin-left: 10%"></div>
+        </div>
+      </div>
+{#      <div class="data_middle">#}
+{#        <div class="middle_top">#}
+{#          <div class="middle_top_list">#}
+{#            <div class="list_title">累计发布数</div>#}
+{#            <div class="list_num list_num1"><span class="counter-value">901</span>条</div>#}
+{#            <div class="today_list_font">今日最新发布<span>12</span>条</div>#}
+{#          </div>#}
+{#          <div class="middle_top_list">#}
+{##}
+{#          </div>#}
+{#          <div class="middle_top_list">#}
+{##}
+{#          </div>#}
+{#             <div>#}
+{#                                <img src="{{ url_for('static', filename='3.png')}}" width="84%" height="84%" style="margin-left: 8%">#}
+{#                        </div>#}
+{#        </div>#}
+{#        <div id="map" class="middle_bottom"></div>#}
+{#                        <div>#}
+{#                                <img src="{{ url_for('static', filename='B.jpg')}}" width="84%" height="84%" style="margin-left: 8%">#}
+{#                        </div>#}
+{#      </div>#}
+      <div class="data_right">
+        <div class="right_top">
+          <div class="left_top_title">原始数据点
+          </div>
+          <div id="Land_analysis" class="left_top_main right_top_main" style="height: 100%;margin-top: -5%;margin-left: 2%"></div>
+        </div>
+        <div class="right_bottom">
+          <div class="left_top_title">分类展示
+          </div>
+          <div id="Information_Delivery" class="left_top_main right_top_main" style="height: 98%;margin-top: -5%;margin-left: -1%"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
+<script src="{{ url_for('static', filename='js/jquery-1.8.3.min.js')}}"></script>
+{#<script src="https://img.hcharts.cn/highmaps/highmaps.js"></script>#}
+{#<script src="https://data.jianshukeji.com/geochina/hunan.js"></script>#}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/4.2.1/echarts-en.min.js"></script>
+<script type="text/javascript">
+  function OSnow(){
+    var agent = navigator.userAgent.toLowerCase();
+    var isMac = /macintosh|mac os x/i.test(navigator.userAgent);
+    {#if (agent.indexOf("win32") >= 0 || agent.indexOf("wow32") >= 0) {#}
+    {#  $(".main").css("height","1080px");#}
+    {#}#}
+    {#if (agent.indexOf("win64") >= 0 || agent.indexOf("wow64") >= 0) {#}
+    {#  $(".main").css("height","1080px");#}
+    {#}#}
+    if(isMac){
+        
+    }
+}
+OSnow();
+  function numInit() {
+    $('.counter-value').each(function(){
+      $(this).prop('Counter',0).animate({
+        Counter: $(this).text()
+      },{
+        duration: 2500,
+        easing: 'swing',
+        step: function (now){
+          $(this).text(now.toFixed(2));
+        }
+      });
+    });
+  }
+
+  numInit();
+  // 基于准备好的dom，初始化echarts实例
+  var i = 0;
+  var myChart1 = echarts.init(document.getElementById('Business_type'));{#var metrodates = {{category_name|safe}};#}
+  var metrodates = ['情感', '美食', '舞蹈','动漫', '音乐', '游戏', '经济', '科创', '教育','运动', '汽车', '影视'];
+  var figures = {{category_num|safe}};
+  let result = metrodates.map((name,i) => ({name, value: figures[i]}));
+
+  option1 = {
+    tooltip : {
+        trigger: 'item',
+        formatter: "{a} <br/><br/>{b} : {c} ({d}%)"
+    },
+      toolbox: {
+        show: true,
+        feature: {
+            dataView: {show: true, readOnly: false},
+            {#magicType: {show: true, type: ['line', 'bar']},#}
+            restore: {show: true},
+            saveAsImage: {show: true}
+        }
+    },
+    legend: {
+      x : 'center',
+      y : 'bottom',
+        orient: 'vertical',
+        left: 'left',
+      data: metrodates,
+      textStyle: {
+        color:'#4ADEFE',
+      }
+    },
+    series : [
+        {
+            name: '分类数量',
+            type: 'pie',
+            radius: ['25%', '55%'],
+            center: ['50%', '45%'],
+            avoidLabelOverlap: false,
+            data: result,
+            {#    [#}
+            {#    {value:335, name:'土地经营权'},#}
+            {#    {value:310, name:'土地流转权'},#}
+            {#    {value:234, name:'房屋所有权'},#}
+            {#    {value:135, name:'集体建设用地'},#}
+            {#    {value:1548, name:'林权'}#}
+            {#],#}
+            itemStyle: {
+              emphasis: {
+                  shadowBlur: 10,
+                  shadowOffsetX: 0,
+                  shadowColor: 'rgba(0, 0, 0, 0.5)'
+              }
+            }
+        }
+    ],
+    color : ['#e5d693','#25afff','#ea1717','#50ffeb','#FF5937','#F3DB5D','#009AFF','#F77474','#28DCCF','#9cceef','#e7b2b2','#679994']
+};
+  // 使用刚指定的配置项和数据显示图表。
+  myChart1.setOption(option1);
+
+
+
+
+  var myChart3 = echarts.init(document.getElementById('Information_Delivery'));
+
+option3 = {
+    dataset: {
+        source: {{ data|safe }}
+        {#    [#}
+        {#    ['score', 'amount', '类别'],#}
+        {##}
+        {#]#}
+    },
+    grid: {containLabel: true},
+    xAxis: {name: 'amount',
+   scale: true,
+                axisLine: {
+                show: true,
+                lineStyle: {
+                    color: '#98cecd'
+                }
+            },
+    },
+    yAxis: {
+        type: 'category',
+        scale: true,
+                axisLine: {
+                show: true,
+                lineStyle: {
+                    color: '#a4d4d4'
+                }
+            },
+    },
+    toolbox: {
+        show: true,
+        feature: {
+            dataView: {show: true, readOnly: false},
+            magicType: {show: true, type: ['line', 'bar']},
+            restore: {show: true},
+            saveAsImage: {show: true}
+        }
+    },
+    visualMap: {
+        orient: 'vertical',
+        left: 'right',
+        bottom: '20%',
+        min: 0,
+        max: 12,
+        {#text: ['High Score', 'Low Score'],#}
+        // Map the score column to color
+        dimension: 0,
+        inRange: {
+            color: ['#65B581', '#FFCE34', '#FD665F']
+        }
+    },
+    series: [
+        {
+            type: 'bar',
+            encode: {
+                // Map the "amount" column to X axis.
+                x: 'amount',
+                // Map the "product" column to Y axis
+                y: ['情感', '美食', '舞蹈','动漫', '音乐', '游戏', '经济', '科创', '教育','运动', '汽车', '影视'],
+            }
+        }
+    ]
+};
+  myChart3.setOption(option3);
+
+</script>
+<script type="text/javascript" src="{{ url_for('static', filename='js/cluster.js')}}"></script>
+<script>
+    var server = {
+      	           content1:{{points|safe}},
+  	    };
+</script>
